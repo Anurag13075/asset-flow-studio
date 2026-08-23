@@ -51,6 +51,7 @@ function Landing() {
         </Link>
         <nav className="hidden items-center gap-7 text-[13px] text-muted-foreground md:flex">
           <a href="#features" className="transition-colors hover:text-foreground">Features</a>
+          <a href="#canvas" className="transition-colors hover:text-foreground">Live canvas</a>
           <a href="#workflow" className="transition-colors hover:text-foreground">Workflow</a>
           <a href="#pricing" className="transition-colors hover:text-foreground">Pricing</a>
         </nav>
@@ -88,7 +89,7 @@ function Landing() {
             href="#features"
             className="inline-flex items-center gap-2 rounded-xl border border-border bg-surface px-5 py-3 text-sm font-medium transition-colors hover:border-primary/40"
           >
-            See how it works
+            Try the live canvas
           </a>
         </div>
 
@@ -261,7 +262,7 @@ function LiveCanvas() {
         </div>
         <p className="max-w-xs text-right text-[13px] leading-relaxed text-muted-foreground">Search, select and inspect a real canvas preview before you unlock the full library.</p>
       </div>
-      <div className="overflow-hidden rounded-2xl border border-border bg-[#171817] shadow-[var(--shadow-lift)]">
+      <div className="overflow-hidden rounded-2xl border border-border bg-[#171817] shadow-(--shadow-lift)">
         <div className="flex flex-wrap items-center gap-3 border-b border-white/10 bg-[#202220] px-4 py-3">
           <div className="flex items-center gap-2 text-xs font-semibold"><span className="size-2 rounded-full bg-primary" />Canvas 01</div>
           <div className="ml-auto flex items-center gap-2">
@@ -272,7 +273,7 @@ function LiveCanvas() {
             <span className="hidden items-center gap-1.5 text-[11px] text-white/45 sm:flex"><Crosshair className="size-3.5" />{visibleAssets.length} in view</span>
           </div>
         </div>
-        <div className="grid min-h-[420px] md:grid-cols-[1fr_220px]">
+        <div className="grid min-h-105 md:grid-cols-[1fr_220px]">
           <div className="relative overflow-hidden bg-[radial-gradient(circle_at_50%_45%,rgba(243,167,18,0.10),transparent_38%),linear-gradient(rgba(255,255,255,0.035)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.035)_1px,transparent_1px)] bg-[size:auto,32px_32px,32px_32px]">
             <div className="absolute left-1/2 top-1/2 size-24 -translate-x-1/2 -translate-y-1/2 rounded-full border border-primary/20 bg-primary/5" />
             {CANVAS_ASSETS.map((asset) => {
