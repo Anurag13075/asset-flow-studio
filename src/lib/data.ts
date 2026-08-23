@@ -23,16 +23,16 @@ export type Asset = {
   color: ColorFamily;
   collection: string;
   bytes: number;
-  width?: number;
-  height?: number;
-  duration?: number;
+  width?: number | undefined;
+  height?: number | undefined;
+  duration?: number | undefined;
   createdAt: string;
   lastUsed: string | null;
   uses: number;
   license: "personal" | "commercial" | "cc0" | "unlicensed";
   hash: string;
-  note?: string;
-  favorite?: boolean;
+  note?: string | undefined;
+  favorite?: boolean | undefined;
 };
 
 export type Collection = { id: string; name: string; icon: string; smart?: string };
