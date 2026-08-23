@@ -80,7 +80,7 @@ function mulberry(seed: number) {
 
 export function generateSeed(count = 96): Asset[] {
   const rnd = mulberry(42);
-  const pick = <T,>(arr: readonly T[]) => arr[Math.floor(rnd() * arr.length)];
+  const pick = <T,>(arr: readonly T[]): T => arr[Math.floor(rnd() * arr.length)] as T;
   const now = Date.now();
   const out: Asset[] = [];
 
@@ -114,7 +114,7 @@ export function generateSeed(count = 96): Asset[] {
 
   // deliberate near-duplicates so the duplicate radar has something to find
   for (let i = 0; i < 6; i++) {
-    const src = out[Math.floor(rnd() * out.length)];
+    const src = out[Math.floor(rnd() * out.length)] as Asset;
     out.push({
       ...src,
       id: `a_dup${i}`,
