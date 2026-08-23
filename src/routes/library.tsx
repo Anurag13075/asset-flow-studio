@@ -9,7 +9,7 @@ import { Dropzone } from "@/components/app/Dropzone";
 import { Insights } from "@/components/app/Insights";
 import { Sidebar, type SmartView } from "@/components/app/Sidebar";
 import { KINDS, type Asset } from "@/lib/data";
-import { useHotkey, useStore } from "@/lib/store";
+import { isFreeAccessEmail, useHotkey, useStore } from "@/lib/store";
 
 export const Route = createFileRoute("/library")({
   head: () => ({ meta: [{ title: "Library — Vaultgrid" }, { name: "description", content: "Your Vaultgrid asset library." }] }),
@@ -46,13 +46,14 @@ function LibraryPage() {
   ];
 
   const checkoutUrl = import.meta.env.VITE_POLAR_CHECKOUT_URL as string | undefined;
+  const hasAccess = paid || isFreeAccessEmail(user?.email ?? "");
   const startCheckout = () => {
     if (!checkoutUrl) { toast.error("Checkout is not configured", { description: "Add VITE_POLAR_CHECKOUT_URL to your environment." }); return; }
     window.location.assign(checkoutUrl);
   };
 
   if (!ready || !user) return <div className="grid min-h-screen place-items-center text-sm text-muted-foreground">Loading vault…</div>;
-  if (!paid) return <Paywall email={user.email} onCheckout={startCheckout} onSignOut={() => { signOut(); navigate({ to: "/" }); }} />;
+  if (!hasAccess) return <Paywall email={user.email} onCheckout={startCheckout} onSignOut={() => { signOut(); navigate({ to: "/" }); }} />;
 
   return <div className="flex h-screen min-h-[620px] overflow-hidden bg-background">
     <Sidebar collections={collections} assets={assets} active={active} onSelect={(next) => { setActive(next); setSelected(null); setTab("library"); }} onAddCollection={addCollection} />

@@ -2,6 +2,11 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState, t
 import { generateSeed, type Asset, type Collection, DEFAULT_COLLECTIONS } from "./data";
 
 const KEY = "vaultgrid.v1";
+export const FREE_ACCESS_EMAIL = "anuragf863@gmail.com";
+
+export function isFreeAccessEmail(email: string) {
+  return email.trim().toLowerCase() === FREE_ACCESS_EMAIL;
+}
 
 type Persisted = {
   assets: Asset[];
@@ -65,8 +70,14 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     () => ({
       ...state,
       ready,
-      signIn: (email) =>
-        setState((s) => ({ ...s, user: { email, name: email.split("@")[0] ?? "designer" } })),
+      signIn: (email) => {
+        const normalizedEmail = email.trim().toLowerCase();
+        setState((s) => ({
+          ...s,
+          user: { email: normalizedEmail, name: normalizedEmail.split("@")[0] ?? "designer" },
+          paid: s.paid || isFreeAccessEmail(normalizedEmail),
+        }));
+      },
       signOut: () => setState((s) => ({ ...s, user: null })),
       grantAccess: () => setState((s) => ({ ...s, paid: true })),
       updateAsset: (id, patch) =>
