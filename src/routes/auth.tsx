@@ -3,6 +3,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { ArrowRight, Boxes, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { useStore } from "@/lib/store";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import textureImg from "@/assets/texture.jpg";
 
 export const Route = createFileRoute("/auth")({
@@ -44,6 +45,9 @@ function AuthPage() {
   return (
     <main className="grid min-h-screen lg:grid-cols-[1fr_1.05fr]">
       <div className="relative flex items-center justify-center px-6 py-16">
+        <div className="absolute right-6 top-6 z-10">
+          <ThemeToggle />
+        </div>
         <div className="pointer-events-none absolute inset-0 veil" />
         <div className="relative w-full max-w-sm">
           <Link to="/" className="flex items-center gap-2">
