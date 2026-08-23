@@ -1,7 +1,8 @@
+import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
-  ArrowRight, Boxes, Command, Fingerprint, Gauge, Layers, Palette, ScanSearch, ShieldCheck,
-  Sparkles, Tags, Wifi,
+  ArrowRight, Boxes, Check, Command, Crosshair, Fingerprint, Gauge, Layers, Palette, ScanSearch,
+  ShieldCheck, Sparkles, Tags, Wifi,
 } from "lucide-react";
 import heroImg from "@/assets/hero.jpg";
 
@@ -104,6 +105,8 @@ function Landing() {
           <div className="pointer-events-none absolute inset-x-10 -bottom-6 h-24 rounded-full bg-primary/20 blur-3xl" />
         </div>
       </section>
+
+      <LiveCanvas />
 
       <section className="relative z-10 border-y border-border/60 bg-surface/40 py-4">
         <div className="flex overflow-hidden">
@@ -231,5 +234,70 @@ function Landing() {
         </div>
       </footer>
     </main>
+  );
+}
+
+const CANVAS_ASSETS = [
+  { id: "aurora", name: "aurora-poster", kind: "image", meta: "4K · amber", color: "#f3a712", position: "left-[8%] top-[18%] rotate-[-6deg]", size: "h-40 w-32" },
+  { id: "orbit", name: "orbit-loop", kind: "video", meta: "00:18 · 4K", color: "#55b6a6", position: "right-[9%] top-[12%] rotate-[5deg]", size: "h-36 w-48" },
+  { id: "mono", name: "mono-display", kind: "font", meta: "OTF · 12 weights", color: "#d7d2c7", position: "left-[25%] bottom-[8%] rotate-[3deg]", size: "h-32 w-44" },
+  { id: "terrain", name: "terrain-kit", kind: "3d", meta: "GLB · 86 MB", color: "#c86b52", position: "right-[25%] bottom-[12%] rotate-[-4deg]", size: "h-44 w-36" },
+] as const;
+
+function LiveCanvas() {
+  const [query, setQuery] = useState("");
+  const [selected, setSelected] = useState(CANVAS_ASSETS[0].id);
+  const activeAsset = CANVAS_ASSETS.find((asset) => asset.id === selected) ?? CANVAS_ASSETS[0];
+  const visibleAssets = CANVAS_ASSETS.filter((asset) =>
+    `${asset.name} ${asset.kind} ${asset.meta}`.toLowerCase().includes(query.toLowerCase()),
+  );
+
+  return (
+    <section id="canvas" className="relative z-10 mx-auto max-w-6xl px-6 pb-24 pt-8">
+      <div className="mb-5 flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-primary">Live canvas / try it now</p>
+          <h2 className="mt-2 text-[clamp(1.9rem,3.6vw,2.8rem)] font-semibold tracking-[-0.03em]">Your whole vault, in one working space.</h2>
+        </div>
+        <p className="max-w-xs text-right text-[13px] leading-relaxed text-muted-foreground">Search, select and inspect a real canvas preview before you unlock the full library.</p>
+      </div>
+      <div className="overflow-hidden rounded-2xl border border-border bg-[#171817] shadow-[var(--shadow-lift)]">
+        <div className="flex flex-wrap items-center gap-3 border-b border-white/10 bg-[#202220] px-4 py-3">
+          <div className="flex items-center gap-2 text-xs font-semibold"><span className="size-2 rounded-full bg-primary" />Canvas 01</div>
+          <div className="ml-auto flex items-center gap-2">
+            <div className="flex items-center gap-2 rounded-md border border-white/10 bg-black/20 px-2.5 py-1.5 text-[11px] text-white/50">
+              <ScanSearch className="size-3.5" />
+              <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Find anything..." className="w-28 bg-transparent outline-none placeholder:text-white/35 sm:w-40" />
+            </div>
+            <span className="hidden items-center gap-1.5 text-[11px] text-white/45 sm:flex"><Crosshair className="size-3.5" />{visibleAssets.length} in view</span>
+          </div>
+        </div>
+        <div className="grid min-h-[420px] md:grid-cols-[1fr_220px]">
+          <div className="relative overflow-hidden bg-[radial-gradient(circle_at_50%_45%,rgba(243,167,18,0.10),transparent_38%),linear-gradient(rgba(255,255,255,0.035)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.035)_1px,transparent_1px)] bg-[size:auto,32px_32px,32px_32px]">
+            <div className="absolute left-1/2 top-1/2 size-24 -translate-x-1/2 -translate-y-1/2 rounded-full border border-primary/20 bg-primary/5" />
+            {CANVAS_ASSETS.map((asset) => {
+              const isVisible = visibleAssets.some((visible) => visible.id === asset.id);
+              return <button key={asset.id} onClick={() => setSelected(asset.id)} className={`absolute ${asset.position} ${asset.size} overflow-hidden rounded-lg border text-left shadow-2xl transition-all duration-300 ${isVisible ? "opacity-100" : "pointer-events-none scale-90 opacity-0"} ${selected === asset.id ? "border-primary ring-2 ring-primary/30" : "border-white/15 hover:-translate-y-1 hover:border-white/40"}`} style={{ background: `radial-gradient(circle at 30% 20%, ${asset.color}aa, transparent 50%), #292c29` }}>
+                <span className="absolute inset-0 opacity-30" style={{ backgroundImage: `repeating-linear-gradient(135deg, ${asset.color} 0 1px, transparent 1px 12px)` }} />
+                <span className="absolute bottom-3 left-3 text-[11px] font-medium text-white/90">{asset.name}</span>
+                <span className="absolute right-3 top-3 rounded bg-black/30 px-1.5 py-1 font-mono text-[9px] uppercase text-white/60">{asset.kind}</span>
+              </button>;
+            })}
+            <div className="absolute bottom-4 left-4 rounded-md border border-white/10 bg-black/30 px-2 py-1 font-mono text-[10px] text-white/45">100% · snap to grid</div>
+          </div>
+          <aside className="border-t border-white/10 bg-[#1d201e] p-5 md:border-l md:border-t-0">
+            <div className="flex items-center justify-between"><span className="font-mono text-[10px] uppercase tracking-widest text-white/40">Selected asset</span><Check className="size-4 text-primary" /></div>
+            <h3 className="mt-5 text-lg font-semibold text-white">{activeAsset.name}</h3>
+            <p className="mt-1 text-xs capitalize text-white/45">{activeAsset.kind} / {activeAsset.meta}</p>
+            <div className="mt-7 space-y-4 border-t border-white/10 pt-5 text-xs">
+              <div className="flex justify-between"><span className="text-white/40">Collection</span><span className="text-white/80">Launch system</span></div>
+              <div className="flex justify-between"><span className="text-white/40">Usage</span><span className="text-white/80">{selected === "terrain" ? "Unused" : "12 placements"}</span></div>
+              <div className="flex justify-between"><span className="text-white/40">Palette</span><span className="flex items-center gap-1.5 text-white/80"><span className="size-2 rounded-full" style={{ background: activeAsset.color }} />{activeAsset.color}</span></div>
+            </div>
+            <Link to="/auth" className="mt-8 flex items-center justify-center gap-2 rounded-lg bg-primary px-3 py-2.5 text-xs font-semibold text-primary-foreground hover:-translate-y-0.5">Unlock the full canvas <ArrowRight className="size-3.5" /></Link>
+          </aside>
+        </div>
+      </div>
+    </section>
   );
 }
