@@ -5,8 +5,16 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * VAULTGRID design system — graphite + amber, Linear/Vercel grade.
- * All colors in oklch. Never hardcode colors in components.
+ * VAULTGRID design system — refined dark product grade.
+ * - Background ink: #16140F
+ * - Card surface: #1D1B15
+ * - Hairline borders: rgba(255, 255, 255, 0.08)
+ * - Primary text: #F2EFE6
+ * - Secondary text: #A39F8F
+ * - Accent amber: #E8A33D (Brand mark & primary CTA button only)
+ * - Accent teal: #4FBFA0 (Demo search match highlight only)
+ * - Headline / Sans font: Inter Tight (weight 500)
+ * - Mono font: JetBrains Mono
  */
 
 @theme inline {
@@ -17,6 +25,7 @@
   --radius-2xl: calc(var(--radius) + 8px);
   --radius-3xl: calc(var(--radius) + 12px);
   --radius-4xl: calc(var(--radius) + 16px);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -40,77 +49,45 @@
   --color-surface: var(--surface);
   --color-surface-2: var(--surface-2);
   --color-hairline: var(--hairline);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
-  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --color-teal-match: #4FBFA0;
+
+  --font-sans: "Inter Tight", "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
 }
 
 :root {
   --radius: 0.75rem;
 
-  --background: oklch(0.16 0.006 60);
-  --foreground: oklch(0.95 0.006 80);
-  --surface: oklch(0.198 0.006 60);
-  --surface-2: oklch(0.235 0.007 65);
-  --hairline: oklch(0.3 0.008 70);
+  --background: #16140F;
+  --foreground: #F2EFE6;
+  --surface: #1D1B15;
+  --surface-2: #24211A;
+  --hairline: rgba(255, 255, 255, 0.08);
 
-  --card: oklch(0.198 0.006 60);
-  --card-foreground: oklch(0.95 0.006 80);
-  --popover: oklch(0.21 0.007 62);
-  --popover-foreground: oklch(0.95 0.006 80);
+  --card: #1D1B15;
+  --card-foreground: #F2EFE6;
+  --popover: #1D1B15;
+  --popover-foreground: #F2EFE6;
 
-  --primary: oklch(0.8 0.152 78);
-  --primary-foreground: oklch(0.19 0.03 60);
-  --secondary: oklch(0.26 0.007 65);
-  --secondary-foreground: oklch(0.94 0.006 80);
-  --muted: oklch(0.24 0.006 62);
-  --muted-foreground: oklch(0.68 0.012 75);
-  --accent: oklch(0.28 0.012 70);
-  --accent-foreground: oklch(0.96 0.006 80);
-  --destructive: oklch(0.62 0.2 25);
-  --destructive-foreground: oklch(0.97 0.005 80);
+  --primary: #E8A33D;
+  --primary-foreground: #16140F;
+  --secondary: #24211A;
+  --secondary-foreground: #F2EFE6;
+  --muted: #24211A;
+  --muted-foreground: #A39F8F;
+  --accent: #28251E;
+  --accent-foreground: #F2EFE6;
+  --destructive: #D9534F;
+  --destructive-foreground: #F2EFE6;
 
-  --border: oklch(0.28 0.007 65);
-  --input: oklch(0.3 0.008 68);
-  --ring: oklch(0.8 0.152 78);
+  --border: rgba(255, 255, 255, 0.08);
+  --input: rgba(255, 255, 255, 0.12);
+  --ring: #E8A33D;
 
-  --chart-1: oklch(0.8 0.152 78);
-  --chart-2: oklch(0.72 0.11 190);
-  --chart-3: oklch(0.68 0.14 330);
-  --chart-4: oklch(0.75 0.15 145);
-  --chart-5: oklch(0.7 0.13 265);
-
-  --sidebar: oklch(0.175 0.006 60);
-  --sidebar-foreground: oklch(0.9 0.006 80);
-  --sidebar-primary: oklch(0.8 0.152 78);
-  --sidebar-primary-foreground: oklch(0.19 0.03 60);
-  --sidebar-accent: oklch(0.25 0.007 65);
-  --sidebar-accent-foreground: oklch(0.95 0.006 80);
-  --sidebar-border: oklch(0.26 0.007 65);
-  --sidebar-ring: oklch(0.8 0.152 78);
-
-  --gradient-amber: linear-gradient(135deg, oklch(0.86 0.14 88), oklch(0.72 0.16 60));
-  --gradient-veil: radial-gradient(
-    120% 100% at 50% 0%,
-    color-mix(in oklab, var(--primary) 14%, transparent),
-    transparent 60%
-  );
-  --shadow-lift: 0 1px 0 0 color-mix(in oklab, white 6%, transparent) inset,
-    0 18px 40px -22px oklch(0 0 0 / 0.9);
-  --shadow-glow: 0 0 0 1px color-mix(in oklab, var(--primary) 30%, transparent),
-    0 12px 50px -18px color-mix(in oklab, var(--primary) 45%, transparent);
+  --shadow-lift: 0 1px 0 0 rgba(255, 255, 255, 0.05) inset,
+    0 16px 36px -16px rgba(0, 0, 0, 0.8);
+  --shadow-glow: 0 0 0 1px rgba(232, 163, 61, 0.25),
+    0 8px 24px -12px rgba(232, 163, 61, 0.3);
   --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -136,18 +113,17 @@
   }
 
   ::selection {
-    background: color-mix(in oklab, var(--primary) 30%, transparent);
+    background: rgba(232, 163, 61, 0.25);
+    color: #F2EFE6;
   }
 
   ::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
+    width: 8px;
+    height: 8px;
   }
   ::-webkit-scrollbar-thumb {
     background: var(--hairline);
     border-radius: 999px;
-    border: 3px solid transparent;
-    background-clip: content-box;
   }
   ::-webkit-scrollbar-track {
     background: transparent;
@@ -155,70 +131,32 @@
 }
 
 @utility surface-panel {
-  background: color-mix(in oklab, var(--surface) 85%, transparent);
-  border: 1px solid var(--border);
+  background: #1D1B15;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: var(--shadow-lift);
-  backdrop-filter: blur(14px);
-}
-
-@utility text-gradient-amber {
-  background: var(--gradient-amber);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
 }
 
 @utility grid-lines {
   background-image:
-    linear-gradient(to right, color-mix(in oklab, var(--hairline) 45%, transparent) 1px, transparent 1px),
-    linear-gradient(to bottom, color-mix(in oklab, var(--hairline) 45%, transparent) 1px, transparent 1px);
-  background-size: 56px 56px;
-}
-
-@utility veil {
-  background: var(--gradient-veil);
+    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 48px 48px;
 }
 
 @utility hover-lift {
   transition:
     transform 0.35s var(--ease-out-quint),
-    border-color 0.35s var(--ease-out-quint),
-    box-shadow 0.35s var(--ease-out-quint);
+    border-color 0.35s var(--ease-out-quint);
   &:hover {
-    transform: translateY(-3px);
-    border-color: color-mix(in oklab, var(--primary) 40%, var(--border));
-    box-shadow: var(--shadow-glow);
-  }
-}
-
-@utility shimmer {
-  position: relative;
-  overflow: hidden;
-  &::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    transform: translateX(-100%);
-    background: linear-gradient(
-      90deg,
-      transparent,
-      color-mix(in oklab, white 7%, transparent),
-      transparent
-    );
-    animation: shimmer-sweep 1.6s infinite;
-  }
-}
-
-@keyframes shimmer-sweep {
-  100% {
-    transform: translateX(100%);
+    transform: translateY(-2px);
+    border-color: rgba(255, 255, 255, 0.16);
   }
 }
 
 @keyframes rise-in {
   from {
     opacity: 0;
-    transform: translateY(14px);
+    transform: translateY(12px);
   }
   to {
     opacity: 1;
@@ -227,7 +165,7 @@
 }
 
 @utility rise {
-  animation: rise-in 0.6s var(--ease-out-quint) both;
+  animation: rise-in 0.5s var(--ease-out-quint) both;
 }
 
 @keyframes marquee-x {
@@ -240,5 +178,14 @@
 }
 
 @utility marquee {
-  animation: marquee-x 38s linear infinite;
+  animation: marquee-x 40s linear infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.animate-blink {
+  animation: blink 1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
