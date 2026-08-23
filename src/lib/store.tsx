@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
-import { generateSeed, type Asset, type Collection, DEFAULT_COLLECTIONS } from "./data";
+import { type Asset, type Collection, DEFAULT_COLLECTIONS } from "./data";
 
-const KEY = "vaultgrid.v1";
+const KEY = "vaultgrid.v2";
 export const FREE_ACCESS_EMAIL = "anuragf863@gmail.com";
 
 export function isFreeAccessEmail(email: string) {
@@ -22,14 +22,14 @@ type Store = Persisted & {
   grantAccess: () => void;
   updateAsset: (id: string, patch: Partial<Asset>) => void;
   removeAssets: (ids: string[]) => void;
-  addAssets: (files: { name: string; bytes: number }[]) => Asset[];
+  addAssets: (files: { name: string; bytes: number; lastModified: number }[]) => Asset[];
   addCollection: (name: string) => void;
 };
 
 const Ctx = createContext<Store | null>(null);
 
 function initial(): Persisted {
-  return { assets: generateSeed(), collections: DEFAULT_COLLECTIONS, user: null, paid: false };
+  return { assets: [], collections: DEFAULT_COLLECTIONS, user: null, paid: false };
 }
 
 function kindFromName(name: string): Asset["kind"] {
@@ -92,15 +92,15 @@ export function StoreProvider({ children }: { children: ReactNode }) {
             name: f.name.replace(/\.[^.]+$/, ""),
             kind,
             ext: f.name.split(".").pop()?.toLowerCase() ?? "bin",
-            tags: ["new-upload"],
-            color: (["amber", "teal", "violet", "slate"] as const)[i % 4]!,
-            collection: "brand",
+            tags: [],
+            color: null,
+            collection: "unfiled",
             bytes: f.bytes,
-            createdAt: new Date().toISOString(),
+            createdAt: new Date(f.lastModified).toISOString(),
             lastUsed: null,
             uses: 0,
-            license: "unlicensed" as const,
-            hash: Math.random().toString(16).slice(2, 14),
+            license: "unknown" as const,
+            hash: null,
           } satisfies Asset;
         });
         setState((s) => ({ ...s, assets: [...created, ...s.assets] }));

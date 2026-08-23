@@ -11,7 +11,7 @@ export function AssetSkeletonGrid({ count = 18 }: { count?: number }) {
           className="shimmer overflow-hidden rounded-xl border border-border bg-surface"
           style={{ animationDelay: `${i * 40}ms` }}
         >
-          <div className="aspect-[4/3] bg-secondary/50" />
+          <div className="aspect-4/3 bg-secondary/50" />
           <div className="space-y-2 p-3">
             <div className="h-3 w-3/4 rounded bg-secondary" />
             <div className="h-2.5 w-1/2 rounded bg-secondary/70" />
@@ -38,11 +38,11 @@ export function AssetGrid({
           onClick={() => onSelect(a)}
           style={{ animationDelay: `${Math.min(i, 24) * 22}ms` }}
           className={`rise hover-lift group overflow-hidden rounded-xl border bg-surface text-left ${
-            selectedId === a.id ? "border-primary/70 shadow-[var(--shadow-glow)]" : "border-border"
+            selectedId === a.id ? "border-primary/70 shadow-(--shadow-glow)" : "border-border"
           }`}
         >
           <div className="relative">
-            <Thumb asset={a} className="aspect-[4/3] w-full" />
+            <Thumb asset={a} className="aspect-4/3 w-full" />
             <span
               onClick={(e) => { e.stopPropagation(); onToggleFavorite(a); }}
               className="absolute right-2 top-2 rounded-md bg-background/70 p-1.5 opacity-0 backdrop-blur transition-opacity group-hover:opacity-100"

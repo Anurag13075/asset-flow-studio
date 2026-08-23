@@ -120,10 +120,9 @@ function AuthPage() {
         <div className="absolute inset-0 bg-background/50" />
         <div className="relative flex h-full flex-col justify-end p-12">
           <blockquote className="max-w-md text-[22px] font-medium leading-snug tracking-[-0.02em]">
-            “Our archive was 61,000 files across four drives. Vaultgrid made it feel like one searchable
-            surface in an afternoon.”
+            Keep your originals where they are. Vaultgrid gives the files you choose a searchable local index.
           </blockquote>
-          <p className="mt-4 text-[13px] text-muted-foreground">Nadia Ferrer — Design lead, Studio Halcyon</p>
+          <p className="mt-4 text-[13px] text-muted-foreground">Local-first asset management</p>
         </div>
       </div>
     </main>

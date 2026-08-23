@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { UploadCloud } from "lucide-react";
 import { toast } from "sonner";
 
-export function Dropzone({ onFiles }: { onFiles: (files: { name: string; bytes: number }[]) => void }) {
+export function Dropzone({ onFiles }: { onFiles: (files: { name: string; bytes: number; lastModified: number }[]) => void }) {
   const [over, setOver] = useState(false);
   const [busy, setBusy] = useState(false);
   const input = useRef<HTMLInputElement>(null);
@@ -10,12 +10,12 @@ export function Dropzone({ onFiles }: { onFiles: (files: { name: string; bytes: 
   const ingest = (files: FileList | null) => {
     if (!files?.length) return;
     setBusy(true);
-    const payload = Array.from(files).map((f) => ({ name: f.name, bytes: f.size }));
+    const payload = Array.from(files).map((f) => ({ name: f.name, bytes: f.size, lastModified: f.lastModified }));
     setTimeout(() => {
       onFiles(payload);
       setBusy(false);
       toast.success(`Indexed ${payload.length} asset${payload.length > 1 ? "s" : ""}`, {
-        description: "Tags auto-suggested from filename and type.",
+        description: "Original filename, size, type, and modified date recorded.",
       });
     }, 700);
   };

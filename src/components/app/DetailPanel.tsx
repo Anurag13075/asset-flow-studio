@@ -20,7 +20,7 @@ export function DetailPanel({
     .slice(0, 6);
 
   return (
-    <aside className="flex h-full w-[340px] shrink-0 flex-col overflow-y-auto border-l border-border bg-sidebar">
+    <aside className="flex h-full w-85 shrink-0 flex-col overflow-y-auto border-l border-border bg-sidebar">
       <div className="flex items-center justify-between border-b border-border px-4 py-3">
         <span className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
           Inspector
@@ -31,7 +31,7 @@ export function DetailPanel({
       </div>
 
       <div className="p-4">
-        <Thumb asset={asset} className="aspect-[4/3] w-full rounded-xl border border-border" />
+        <Thumb asset={asset} className="aspect-4/3 w-full rounded-xl border border-border" />
         <h2 className="mt-4 text-[15px] font-semibold leading-snug">{asset.name}.{asset.ext}</h2>
         {isDupe(all, asset) && (
           <p className="mt-2 rounded-md border border-destructive/40 bg-destructive/10 px-2 py-1.5 text-[11px] text-destructive-foreground">
@@ -54,7 +54,14 @@ export function DetailPanel({
             <Link2 className="size-3.5" />
           </button>
           <button
-            onClick={() => { navigator.clipboard?.writeText(asset.hash); toast.success("Hash copied"); }}
+            onClick={() => {
+              if (!asset.hash) {
+                toast.info("No hash is available for this import");
+                return;
+              }
+              navigator.clipboard?.writeText(asset.hash);
+              toast.success("Hash copied");
+            }}
             className="rounded-lg border border-border bg-secondary px-3 py-2 text-xs transition-colors hover:border-primary/50"
           >
             <Copy className="size-3.5" />
@@ -76,11 +83,11 @@ export function DetailPanel({
           <Row k="Last used" v={relTime(asset.lastUsed)} />
           <Row k="Uses" v={String(asset.uses)} />
           <Row k="License" v={asset.license} />
-          <Row k="Hash" v={asset.hash} mono />
+          <Row k="Hash" v={asset.hash ?? "Not calculated"} mono />
         </dl>
 
         <div className="mt-5">
-          <p className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">Palette</p>
+          <p className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">Palette override</p>
           <div className="mt-2 flex gap-1.5">
             {COLOR_FAMILIES.map((c) => (
               <button
