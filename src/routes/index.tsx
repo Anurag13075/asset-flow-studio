@@ -4,9 +4,7 @@ import {
   ArrowRight,
   Boxes,
   Command,
-  FileCode,
   FileImage,
-  FileText,
   FileVideo,
   Fingerprint,
   Box,
@@ -129,31 +127,37 @@ const FEATURES = [
     icon: ScanSearch,
     title: "Sub-10ms search",
     body: "A local inverted index over filenames, tags, notes, EXIF and embedded metadata. Results land before your finger leaves the key.",
+    colSpan: "md:col-span-2 lg:col-span-2",
   },
   {
     icon: Fingerprint,
     title: "Duplicate radar",
     body: "Review files with matching names and related metadata before you remove an unnecessary copy.",
+    colSpan: "md:col-span-1 lg:col-span-1",
   },
   {
     icon: Palette,
     title: "Color-family filter",
     body: "Every asset is binned into a palette family at index time. Filter a 40k-file vault down to “teal + isometric” instantly.",
+    colSpan: "md:col-span-1 lg:col-span-1",
   },
   {
     icon: Tags,
     title: "Auto-tag on import",
     body: "Filenames, folder ancestry and file type become structured tags the moment a file lands in the dropzone.",
+    colSpan: "md:col-span-1 lg:col-span-1",
   },
   {
     icon: Gauge,
     title: "Vault insights",
     body: "See growth over time, storage by kind, reclaimable dead weight and your real working vocabulary of tags.",
+    colSpan: "md:col-span-1 lg:col-span-1",
   },
   {
     icon: Command,
     title: "Keyboard-native",
     body: "⌘K jumps to any asset or action. Grid, list, filters, star, purge — all reachable without touching the mouse.",
+    colSpan: "md:col-span-3 lg:col-span-3",
   },
 ];
 
@@ -394,11 +398,11 @@ function Landing() {
           Six core capabilities designed for serious local media archives.
         </p>
 
-        <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-10 grid gap-4 md:grid-cols-3">
           {FEATURES.map((f, i) => (
             <article
               key={f.title}
-              className="rise hover-lift rounded-xl border border-[rgba(255,255,255,0.08)] bg-[#1D1B15] p-5"
+              className={`rise hover-lift rounded-xl border border-[rgba(255,255,255,0.08)] bg-[#1D1B15] p-5 ${f.colSpan}`}
               style={{ animationDelay: `${i * 50}ms` }}
             >
               <f.icon className="size-5 text-[#F2EFE6]" strokeWidth={1.5} />
