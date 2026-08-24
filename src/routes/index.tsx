@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import {
   ArrowRight,
   Boxes,
+  Check,
+  ChevronDown,
   Command,
   FileCode,
   FileImage,
@@ -11,6 +13,7 @@ import {
   Fingerprint,
   Box,
   Gauge,
+  HelpCircle,
   Layers,
   Palette,
   ScanSearch,
@@ -19,6 +22,7 @@ import {
   Tags,
   Search,
   CornerDownLeft,
+  Zap,
 } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
@@ -179,8 +183,10 @@ function HighlightedText({ text, match }: { text: string; match: string }) {
 function SearchDemoPanel() {
   const [index, setIndex] = useState(0);
   const [fade, setFade] = useState(true);
+  const [paused, setPaused] = useState(false);
 
   useEffect(() => {
+    if (paused) return;
     const timer = setInterval(() => {
       setFade(false);
       setTimeout(() => {
@@ -190,12 +196,42 @@ function SearchDemoPanel() {
     }, 2400);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [paused]);
 
   const current = DEMO_QUERIES[index];
 
   return (
-    <div className="w-full max-w-2xl mx-auto mt-12 rounded-xl border border-border bg-surface text-left shadow-[0_16px_36px_-16px_rgba(0,0,0,0.8)] overflow-hidden">
+    <div
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      className="w-full max-w-2xl mx-auto mt-10 rounded-xl border border-border bg-surface text-left shadow-[0_16px_36px_-16px_rgba(0,0,0,0.8)] overflow-hidden transition-all duration-300 hover:border-primary/40"
+    >
+      {/* Quick query switcher pills */}
+      <div className="flex items-center gap-2 px-4 py-2.5 border-b border-border bg-background/50 overflow-x-auto text-xs">
+        <span className="font-mono text-[11px] text-muted-foreground shrink-0 mr-1">
+          Try queries:
+        </span>
+        {DEMO_QUERIES.map((q, idx) => (
+          <button
+            key={q.query}
+            onClick={() => {
+              setFade(false);
+              setTimeout(() => {
+                setIndex(idx);
+                setFade(true);
+              }, 150);
+            }}
+            className={`px-2.5 py-1 rounded-md font-mono text-[11px] transition-all whitespace-nowrap ${
+              index === idx
+                ? "bg-secondary text-foreground font-medium border border-border"
+                : "text-muted-foreground hover:text-foreground hover:bg-secondary/60"
+            }`}
+          >
+            "{q.query}"
+          </button>
+        ))}
+      </div>
+
       {/* Top command bar */}
       <div className="flex items-center gap-3 px-4 py-3.5 border-b border-border bg-surface">
         <Search className="size-4 text-muted-foreground shrink-0" />
@@ -215,22 +251,22 @@ function SearchDemoPanel() {
       </div>
 
       {/* Results list */}
-      <div className="p-2 space-y-1">
+      <div className="p-2 space-y-1 min-h-[160px]">
         {current.results.map((res, i) => {
           const Icon = res.icon;
           return (
             <div
               key={`${current.query}-${i}`}
-              className={`group flex items-center justify-between px-3 py-2.5 rounded-lg transition-all duration-200 hover:bg-secondary ${
+              className={`group flex items-center justify-between px-3 py-2.5 rounded-lg transition-all duration-200 hover:bg-secondary cursor-pointer ${
                 fade ? "opacity-100 translate-y-0" : "opacity-0 translate-y-1"
               }`}
               style={{ transitionDelay: `${i * 40}ms` }}
             >
               <div className="flex items-center gap-3 min-w-0 pr-4">
-                <div className="p-1.5 rounded border border-border bg-background text-muted-foreground">
+                <div className="p-1.5 rounded border border-border bg-background text-muted-foreground group-hover:text-foreground transition-colors">
                   <Icon className="size-4" />
                 </div>
-                <div className="min-w-0 text-xs text-foreground truncate">
+                <div className="min-w-0 text-xs text-foreground truncate font-medium">
                   <HighlightedText text={res.name} match={res.match} />
                 </div>
               </div>
@@ -252,10 +288,10 @@ function SearchDemoPanel() {
       {/* Footer bar */}
       <div className="flex items-center justify-between px-4 py-2 border-t border-border bg-background font-mono text-[11px] text-muted-foreground">
         <div className="flex items-center gap-2">
-          <span className="size-1.5 rounded-full bg-[#4FBFA0]" />
-          <span>3 matching assets indexed locally</span>
+          <span className="size-1.5 rounded-full bg-[#4FBFA0] animate-pulse" />
+          <span>{current.results.length} matching assets indexed locally</span>
         </div>
-        <span>sub-10ms match</span>
+        <span className="text-[#4FBFA0] font-semibold">sub-10ms match</span>
       </div>
     </div>
   );
@@ -305,51 +341,82 @@ function Landing() {
 
       {/* Hero Section */}
       <section className="relative z-10 mx-auto max-w-5xl px-6 pb-20 pt-12 text-center">
-        {/* Eyebrow label */}
-        <div className="rise font-mono text-xs text-muted-foreground tracking-wide">
-          local index · one-time $2
+        {/* Eyebrow label & release badge */}
+        <div className="rise inline-flex items-center gap-2 rounded-full border border-border bg-surface/80 px-3 py-1 font-mono text-[11px] text-muted-foreground backdrop-blur">
+          <span className="size-2 rounded-full bg-[#E8A33D] animate-pulse" />
+          <span>Vaultgrid v2.4 Release</span>
+          <span className="text-border">•</span>
+          <span className="text-foreground font-medium">Local-first index · $2 once</span>
         </div>
 
         {/* Restrained Headline */}
         <h1
-          className="rise mx-auto mt-5 max-w-2xl text-[34px] sm:text-[38px] lg:text-[40px] font-medium leading-[1.12] tracking-[-0.02em] text-foreground"
+          className="rise mx-auto mt-6 max-w-3xl text-[36px] sm:text-[44px] lg:text-[48px] font-medium leading-[1.1] tracking-[-0.025em] text-foreground"
           style={{ animationDelay: "60ms" }}
         >
           Every asset you own, findable in one keystroke.
         </h1>
 
-        {/* Subhead paragraph (max ~440px wide, centered) */}
+        {/* Subhead paragraph */}
         <p
-          className="rise mx-auto mt-4 max-w-[440px] text-[14px] leading-relaxed text-muted-foreground"
+          className="rise mx-auto mt-5 max-w-[520px] text-[15px] leading-relaxed text-muted-foreground"
           style={{ animationDelay: "120ms" }}
         >
           Vaultgrid indexes your design elements, video masters, 3D props and
-          typefaces right where they live on your drive.
+          typefaces right where they live on your drive. Zero cloud lag, zero privacy compromises.
         </p>
 
-        {/* Primary CTA button only */}
+        {/* Primary CTA button & shortcuts */}
         <div
-          className="rise mt-7 flex flex-col items-center justify-center gap-3"
+          className="rise mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4"
           style={{ animationDelay: "180ms" }}
         >
           <Link
             to="/auth"
-            className="group inline-flex items-center gap-2 rounded-lg bg-[#E8A33D] px-5 py-2.5 text-xs font-semibold text-[#16140F] transition-transform duration-200 hover:-translate-y-0.5"
+            className="group inline-flex items-center gap-2.5 rounded-lg bg-[#E8A33D] px-6 py-3 text-xs font-semibold text-[#16140F] transition-all duration-200 hover:-translate-y-0.5 shadow-[0_4px_20px_-4px_rgba(232,163,61,0.4)]"
           >
-            Unlock for $2
+            Unlock lifetime access for $2
             <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
           </Link>
 
           <a
-            href="#canvas"
-            className="text-[12px] text-muted-foreground transition-colors hover:text-foreground underline underline-offset-4"
+            href="#app-showcase"
+            className="inline-flex items-center gap-2 rounded-lg border border-border bg-surface/60 px-4 py-3 text-xs font-medium text-foreground transition-colors hover:bg-secondary"
           >
-            Or explore the live canvas preview below
+            <ScanSearch className="size-3.5 text-muted-foreground" />
+            View Library Interface
           </a>
         </div>
 
+        {/* Quick Feature Stats Bar */}
+        <div
+          className="rise mt-10 grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-3xl mx-auto pt-6 border-t border-border/60 text-left font-mono text-[11px]"
+          style={{ animationDelay: "220ms" }}
+        >
+          <div className="p-3 rounded-lg border border-border/50 bg-surface/40">
+            <div className="text-foreground font-semibold flex items-center gap-1.5">
+              <span className="size-1.5 rounded-full bg-[#4FBFA0]" /> &lt; 10ms
+            </div>
+            <div className="text-muted-foreground mt-0.5 text-[10px]">Instant search latency</div>
+          </div>
+          <div className="p-3 rounded-lg border border-border/50 bg-surface/40">
+            <div className="text-foreground font-semibold flex items-center gap-1.5">
+              <ShieldCheck className="size-3 text-[#E8A33D]" /> 100% Local
+            </div>
+            <div className="text-muted-foreground mt-0.5 text-[10px]">No cloud uploads</div>
+          </div>
+          <div className="p-3 rounded-lg border border-border/50 bg-surface/40">
+            <div className="text-foreground font-semibold">$2 Once</div>
+            <div className="text-muted-foreground mt-0.5 text-[10px]">No monthly fees</div>
+          </div>
+          <div className="p-3 rounded-lg border border-border/50 bg-surface/40">
+            <div className="text-foreground font-semibold">16+ Formats</div>
+            <div className="text-muted-foreground mt-0.5 text-[10px]">PSD, GLB, MOV, OTF...</div>
+          </div>
+        </div>
+
         {/* Signature Command Palette Demo Panel */}
-        <div className="rise" style={{ animationDelay: "240ms" }}>
+        <div className="rise" style={{ animationDelay: "260ms" }}>
           <SearchDemoPanel />
         </div>
       </section>
@@ -386,6 +453,15 @@ function Landing() {
         </div>
       </section>
 
+      {/* App Interface Showcase Section */}
+      <AppInterfaceShowcase />
+
+      {/* Format Explorer Section */}
+      <FormatExplorer />
+
+      {/* Duplicate Radar Section */}
+      <DuplicateRadarSection />
+
       {/* Live Canvas Section */}
       <LiveCanvas />
 
@@ -416,6 +492,12 @@ function Landing() {
           ))}
         </div>
       </section>
+
+      {/* Comparison Section */}
+      <ComparisonSection />
+
+      {/* FAQ Section */}
+      <FaqSection />
 
       {/* Workflow Section */}
       <section id="workflow" className="relative z-10 mx-auto max-w-6xl px-6 pb-20">
@@ -483,47 +565,59 @@ function Landing() {
 
       {/* Pricing Section */}
       <section id="pricing" className="relative z-10 mx-auto max-w-3xl px-6 pb-24 text-center">
-        <h2 className="text-2xl sm:text-3xl font-medium tracking-[-0.02em] text-foreground">
+        <div className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3 py-1 font-mono text-[11px] text-muted-foreground mb-3">
+          <Zap className="size-3.5 text-[#E8A33D]" />
+          <span>Simple Transparent Pricing</span>
+        </div>
+        <h2 className="text-3xl sm:text-4xl font-medium tracking-tight text-foreground">
           One payment. Everything, forever.
         </h2>
-        <p className="mx-auto mt-3 max-w-md text-[14px] text-muted-foreground">
-          No subscriptions, no cloud tiers. Pay two dollars once and unlock lifetime access to your local vault.
+        <p className="mx-auto mt-3 max-w-md text-[14px] text-muted-foreground leading-relaxed">
+          No monthly subscriptions, no seat tiers. Pay two dollars once and unlock full lifetime access to your local media archive.
         </p>
 
-        <div className="mx-auto mt-8 max-w-md rounded-2xl border border-border bg-surface p-8 text-left shadow-[0_16px_36px_-16px_rgba(0,0,0,0.8)]">
+        <div className="relative mx-auto mt-8 max-w-md rounded-2xl border border-[#E8A33D]/40 bg-surface p-8 text-left shadow-[0_20px_40px_-15px_rgba(232,163,61,0.15)] overflow-hidden">
+          <div className="absolute top-0 right-0 bg-[#E8A33D] text-[#16140F] font-mono text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-bl-lg">
+            Best Value
+          </div>
+
           <div className="flex items-end gap-2">
-            <span className="text-4xl font-semibold tracking-tight text-foreground">$2</span>
+            <span className="text-5xl font-semibold tracking-tight text-foreground">$2</span>
             <span className="pb-1 text-xs font-mono text-muted-foreground">
-              once · lifetime access
+              USD · pay once, own forever
             </span>
           </div>
 
-          <ul className="mt-6 space-y-2.5 text-[13px] text-muted-foreground">
+          <ul className="mt-6 space-y-3 text-[13px] text-muted-foreground">
             {[
-              "Unlimited assets and local collections",
-              "Instant sub-10ms search & filter system",
-              "Duplicate radar and reclaim reports",
-              "Vault insights & vocabulary analytics",
-              "⌘K command palette and keyboard shortcuts",
-              "All future updates included",
+              "Unlimited asset indexing & local collections",
+              "Sub-10ms instant command search system",
+              "Duplicate radar & storage reclaim optimizer",
+              "Vault insights & working vocabulary analytics",
+              "⌘K command palette with full keyboard navigation",
+              "100% private local browser storage",
+              "All future software updates included",
             ].map((f) => (
-              <li key={f} className="flex items-start gap-2.5">
-                <span className="mt-1.5 size-1 shrink-0 rounded-full bg-muted-foreground" />
-                {f}
+              <li key={f} className="flex items-center gap-3">
+                <div className="size-4 rounded-full bg-[#E8A33D]/20 text-[#E8A33D] flex items-center justify-center shrink-0">
+                  <Check className="size-2.5" strokeWidth={3} />
+                </div>
+                <span className="text-foreground/90">{f}</span>
               </li>
             ))}
           </ul>
 
           <Link
             to="/auth"
-            className="mt-7 flex items-center justify-center gap-2 rounded-lg bg-[#E8A33D] px-5 py-2.5 text-xs font-semibold text-[#16140F] transition-transform duration-200 hover:-translate-y-0.5"
+            className="mt-8 flex items-center justify-center gap-2 rounded-xl bg-[#E8A33D] px-5 py-3 text-xs font-semibold text-[#16140F] transition-all duration-200 hover:-translate-y-0.5 shadow-[0_4px_20px_-4px_rgba(232,163,61,0.4)]"
           >
-            Get lifetime access
+            Get lifetime access for $2
             <ArrowRight className="size-3.5" />
           </Link>
-          <p className="mt-3 text-center text-[11px] font-mono text-muted-foreground">
-            Secure checkout via Polar · instant unlock
-          </p>
+          <div className="mt-4 flex items-center justify-center gap-2 text-[11px] font-mono text-muted-foreground">
+            <ShieldCheck className="size-3.5 text-[#4FBFA0]" />
+            <span>Secure checkout via Polar · 100% money-back guarantee</span>
+          </div>
         </div>
       </section>
 
@@ -535,6 +629,506 @@ function Landing() {
         </div>
       </footer>
     </main>
+  );
+}
+
+function FormatExplorer() {
+  const [activeTab, setActiveTab] = useState("3d");
+
+  const CATEGORIES = [
+    {
+      id: "3d",
+      label: "3D Props & Rigs",
+      icon: Box,
+      exts: ["glb", "usdz", "blend", "c4d", "obj", "fbx"],
+      sampleAssets: [
+        { name: "lounge_chair_turntable.glb", size: "18.4 MB", tags: ["furniture", "pbr", "isometric"] },
+        { name: "eames_chair_turntable_rig.blend", size: "126 MB", tags: ["rigged", "studio", "lighting"] },
+        { name: "hdr_studio_lighting_4k.exr", size: "32.1 MB", tags: ["environment", "hdri"] },
+      ],
+    },
+    {
+      id: "video",
+      label: "Video & Motion Reels",
+      icon: FileVideo,
+      exts: ["mp4", "mov", "prores", "r3d", "webm"],
+      sampleAssets: [
+        { name: "product_demo_4k_master.mp4", size: "1.4 GB", tags: ["master", "4k", "prores"] },
+        { name: "brand_ident_motion_loop.mov", size: "245 MB", tags: ["alpha", "60fps", "loop"] },
+        { name: "kinetic_type_overlay.webm", size: "48 MB", tags: ["transparent", "overlay"] },
+      ],
+    },
+    {
+      id: "fonts",
+      label: "Typefaces & Glyphs",
+      icon: FileText,
+      exts: ["otf", "ttf", "woff2", "variable"],
+      sampleAssets: [
+        { name: "InterTight-VariableFont.woff2", size: "140 KB", tags: ["sans", "variable", "ui"] },
+        { name: "JetBrainsMono-Bold.otf", size: "310 KB", tags: ["mono", "code", "ligatures"] },
+        { name: "Syne Display-ExtraBold.ttf", size: "280 KB", tags: ["display", "headline"] },
+      ],
+    },
+    {
+      id: "brand",
+      label: "Design Vectors & PSDs",
+      icon: Layers,
+      exts: ["psd", "ai", "fig", "svg", "eps"],
+      sampleAssets: [
+        { name: "brandmark_vector_blue.svg", size: "12 KB", tags: ["logo", "vector", "rgb"] },
+        { name: "hero_banner_blue_v3.psd", size: "84.2 MB", tags: ["photoshop", "layers", "q1"] },
+        { name: "design_system_tokens.fig", size: "4.8 MB", tags: ["figma", "components"] },
+      ],
+    },
+  ];
+
+  const currentCat = CATEGORIES.find((c) => c.id === activeTab) || CATEGORIES[0];
+
+  return (
+    <section className="relative z-10 mx-auto max-w-6xl px-6 py-16">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+        <div>
+          <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-[#E8A33D]">
+            Multi-Format Indexing
+          </p>
+          <h2 className="mt-2 text-2xl sm:text-3xl font-medium tracking-tight text-foreground">
+            Native indexers for every media type
+          </h2>
+        </div>
+        <p className="max-w-md text-[13px] text-muted-foreground leading-relaxed">
+          Vaultgrid doesn't treat your files like generic blobs. Each file extension triggers format-aware metadata extraction directly on disk.
+        </p>
+      </div>
+
+      <div className="rounded-2xl border border-border bg-surface overflow-hidden shadow-lg">
+        {/* Category Tabs */}
+        <div className="flex flex-wrap border-b border-border bg-background/60 p-2 gap-2">
+          {CATEGORIES.map((cat) => {
+            const Icon = cat.icon;
+            const active = activeTab === cat.id;
+            return (
+              <button
+                key={cat.id}
+                onClick={() => setActiveTab(cat.id)}
+                className={`flex items-center gap-2.5 px-4 py-2.5 rounded-xl font-medium text-xs transition-all ${
+                  active
+                    ? "bg-surface text-foreground shadow-sm border border-border"
+                    : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
+                }`}
+              >
+                <Icon className={`size-4 ${active ? "text-[#E8A33D]" : ""}`} />
+                <span>{cat.label}</span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Tab Content Panel */}
+        <div className="p-6 grid md:grid-cols-12 gap-6 items-center">
+          <div className="md:col-span-5 space-y-4 text-left">
+            <h3 className="text-xl font-medium text-foreground flex items-center gap-2">
+              <span>{currentCat.label}</span>
+            </h3>
+            <p className="text-xs leading-relaxed text-muted-foreground">
+              Deep inspection reads color profiles, vertex counts, frame rates, and font weights automatically upon dropping into your vault.
+            </p>
+
+            <div className="pt-2">
+              <span className="font-mono text-[11px] text-muted-foreground block mb-2">
+                Supported Extensions:
+              </span>
+              <div className="flex flex-wrap gap-1.5 font-mono text-[11px]">
+                {currentCat.exts.map((ext) => (
+                  <span
+                    key={ext}
+                    className="px-2 py-0.5 rounded border border-border bg-background text-foreground"
+                  >
+                    .{ext}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="md:col-span-7 space-y-2">
+            {currentCat.sampleAssets.map((asset, i) => (
+              <div
+                key={i}
+                className="flex flex-col sm:flex-row sm:items-center justify-between p-3.5 rounded-xl border border-border bg-background/80 hover:border-border/80 transition-all text-left gap-2"
+              >
+                <div className="min-w-0">
+                  <div className="font-mono text-xs font-medium text-foreground truncate">
+                    {asset.name}
+                  </div>
+                  <div className="flex flex-wrap gap-1.5 mt-2">
+                    {asset.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="px-1.5 py-0.5 rounded bg-surface border border-border text-[10px] font-mono text-muted-foreground"
+                      >
+                        #{tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                <div className="font-mono text-[11px] text-muted-foreground shrink-0 sm:text-right">
+                  <span className="px-2 py-0.5 rounded bg-surface border border-border text-[10px] text-foreground">
+                    {asset.size}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ComparisonSection() {
+  const COMPARISONS = [
+    {
+      feature: "Search Latency",
+      vaultgrid: "sub-10ms instant local inverted index",
+      cloudDam: "1,200ms+ network API round-trip",
+    },
+    {
+      feature: "Privacy & Data Ownership",
+      vaultgrid: "100% stored on local drive / private NAS",
+      cloudDam: "Originals uploaded to cloud servers",
+    },
+    {
+      feature: "Pricing Model",
+      vaultgrid: "One-time $2 lifetime access",
+      cloudDam: "$15–$50 per user per month",
+    },
+    {
+      feature: "Offline Access",
+      vaultgrid: "Full indexing & search without internet",
+      cloudDam: "Broken when offline or on poor Wi-Fi",
+    },
+    {
+      feature: "File Size Limits",
+      vaultgrid: "Unlimited (up to your drive capacity)",
+      cloudDam: "Strict tier caps & GB overage fees",
+    },
+  ];
+
+  return (
+    <section className="relative z-10 mx-auto max-w-5xl px-6 py-16">
+      <div className="text-center max-w-xl mx-auto mb-10">
+        <p className="font-mono text-[11px] uppercase tracking-widest text-[#E8A33D]">
+          Engineered Differently
+        </p>
+        <h2 className="mt-2 text-2xl sm:text-3xl font-medium tracking-tight text-foreground">
+          Vaultgrid vs. Cloud Asset Managers
+        </h2>
+      </div>
+
+      <div className="rounded-2xl border border-border bg-surface overflow-hidden shadow-xl text-left font-sans">
+        <div className="grid grid-cols-12 border-b border-border bg-background/80 p-4 text-xs font-mono font-medium text-muted-foreground">
+          <div className="col-span-4 sm:col-span-4">Capability</div>
+          <div className="col-span-4 sm:col-span-4 text-foreground font-semibold flex items-center gap-1.5">
+            <span className="size-2 rounded-full bg-[#E8A33D]" /> Vaultgrid
+          </div>
+          <div className="col-span-4 sm:col-span-4 text-muted-foreground">Traditional Cloud DAM</div>
+        </div>
+
+        <div className="divide-y divide-border/60">
+          {COMPARISONS.map((row, i) => (
+            <div key={i} className="grid grid-cols-12 p-4 text-xs items-center hover:bg-secondary/40 transition-colors">
+              <div className="col-span-4 font-medium text-foreground pr-2">{row.feature}</div>
+              <div className="col-span-4 font-mono text-emerald-400 font-medium pr-2 flex items-center gap-1.5">
+                <Check className="size-3.5 text-[#E8A33D] shrink-0" />
+                <span>{row.vaultgrid}</span>
+              </div>
+              <div className="col-span-4 font-mono text-muted-foreground">{row.cloudDam}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function FaqSection() {
+  const [openIdx, setOpenIdx] = useState<number | null>(0);
+
+  const FAQS = [
+    {
+      q: "Does Vaultgrid copy or move my original files?",
+      a: "No. Vaultgrid indexes files in-place exactly where they live on your local hard drive, SSD, or NAS shares. Your existing folder hierarchy and file locations are completely preserved.",
+    },
+    {
+      q: "What does $2 lifetime access mean?",
+      a: "You pay a single $2 payment via Polar to unlock unlimited asset indexing, collections, command palette search, and all future software updates with no recurring subscription.",
+    },
+    {
+      q: "Is my asset metadata sent to any server?",
+      a: "Never. All search indices, tags, EXIF details, and thumbnail catalogs are stored locally in your browser's IndexedDB / local storage engine.",
+    },
+    {
+      q: "What file formats does Vaultgrid support?",
+      a: "Vaultgrid supports 16+ common design, motion, and 3D formats including PSD, AI, FIG, GLB, USDZ, BLEND, MP4, MOV, OTF, TTF, WOFF2, WAV, AIFF, SVG, EXR, and C4D.",
+    },
+  ];
+
+  return (
+    <section className="relative z-10 mx-auto max-w-3xl px-6 py-16 text-left">
+      <div className="text-center mb-10">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-border bg-surface font-mono text-[11px] text-muted-foreground">
+          <HelpCircle className="size-3.5 text-[#E8A33D]" />
+          <span>Frequently Asked Questions</span>
+        </div>
+        <h2 className="mt-3 text-2xl sm:text-3xl font-medium tracking-tight text-foreground">
+          Everything you need to know
+        </h2>
+      </div>
+
+      <div className="space-y-3">
+        {FAQS.map((faq, i) => {
+          const isOpen = openIdx === i;
+          return (
+            <div
+              key={i}
+              className="rounded-xl border border-border bg-surface overflow-hidden transition-all"
+            >
+              <button
+                onClick={() => setOpenIdx(isOpen ? null : i)}
+                className="w-full flex items-center justify-between p-4 text-left text-sm font-medium text-foreground hover:bg-secondary/50 transition-colors"
+              >
+                <span>{faq.q}</span>
+                <ChevronDown
+                  className={`size-4 text-muted-foreground transition-transform duration-200 shrink-0 ${
+                    isOpen ? "rotate-180 text-[#E8A33D]" : ""
+                  }`}
+                />
+              </button>
+              {isOpen && (
+                <div className="px-4 pb-4 text-xs leading-relaxed text-muted-foreground border-t border-border/50 pt-3">
+                  {faq.a}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
+function DuplicateRadarSection() {
+  const [resolved, setResolved] = useState(false);
+
+  return (
+    <section className="relative z-10 mx-auto max-w-6xl px-6 py-16">
+      <div className="rounded-2xl border border-border bg-surface p-8 sm:p-10 shadow-xl overflow-hidden relative">
+        <div className="grid lg:grid-cols-12 gap-8 items-center">
+          <div className="lg:col-span-6 text-left">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-border bg-background font-mono text-[11px] text-muted-foreground mb-4">
+              <Fingerprint className="size-3.5 text-[#E8A33D]" />
+              <span>Smart Storage Optimizer</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-medium tracking-tight text-foreground">
+              Reclaim gigabytes with Duplicate Radar
+            </h2>
+            <p className="mt-3 text-[14px] text-muted-foreground leading-relaxed">
+              Design projects quickly create duplicate assets across client folders. Vaultgrid flags identical filenames and related metadata without altering your original files.
+            </p>
+
+            <div className="mt-6 space-y-3 font-mono text-xs text-muted-foreground">
+              <div className="flex items-center gap-2">
+                <span className="size-1.5 rounded-full bg-[#E8A33D]" />
+                <span>Identifies identical file hashes & token variations</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="size-1.5 rounded-full bg-[#4FBFA0]" />
+                <span>Safely reviews duplicate paths before action</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="lg:col-span-6">
+            <div className="rounded-xl border border-border bg-background p-4 text-left shadow-inner">
+              <div className="flex items-center justify-between border-b border-border pb-3 mb-3 font-mono text-xs">
+                <span className="text-foreground font-medium flex items-center gap-2">
+                  <Fingerprint className="size-4 text-[#E8A33D]" />
+                  Radar Alert: 2 duplicates found
+                </span>
+                <span className="text-muted-foreground">Potential saving: 126 MB</span>
+              </div>
+
+              {!resolved ? (
+                <div className="space-y-2">
+                  <div className="p-3 rounded-lg border border-border bg-surface flex items-center justify-between">
+                    <div>
+                      <div className="font-mono text-xs text-foreground font-medium">
+                        hero_banner_blue_v3.psd
+                      </div>
+                      <div className="font-mono text-[10px] text-muted-foreground">
+                        /Marketing/Campaigns/Q1 (84.2 MB)
+                      </div>
+                    </div>
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                      Keep original
+                    </span>
+                  </div>
+
+                  <div className="p-3 rounded-lg border border-border bg-surface/50 flex items-center justify-between">
+                    <div>
+                      <div className="font-mono text-xs text-foreground font-medium">
+                        hero_banner_blue_v3 (1).psd
+                      </div>
+                      <div className="font-mono text-[10px] text-muted-foreground">
+                        /Downloads/Archive (84.2 MB)
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => setResolved(true)}
+                      className="text-[11px] font-mono px-2.5 py-1 rounded bg-destructive/20 text-destructive hover:bg-destructive/30 border border-destructive/30 transition-colors"
+                    >
+                      Purge duplicate
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="p-6 text-center space-y-3">
+                  <div className="size-10 rounded-full bg-[#4FBFA0]/20 text-[#4FBFA0] mx-auto flex items-center justify-center">
+                    <Check className="size-5" strokeWidth={2.5} />
+                  </div>
+                  <div className="text-sm font-medium text-foreground">
+                    Duplicate purged! 84.2 MB reclaimed.
+                  </div>
+                  <button
+                    onClick={() => setResolved(false)}
+                    className="text-xs font-mono text-muted-foreground underline underline-offset-4 hover:text-foreground"
+                  >
+                    Reset simulation
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function AppInterfaceShowcase() {
+  const [activeHotspot, setActiveHotspot] = useState<number | null>(0);
+
+  const HOTSPOTS = [
+    {
+      id: 0,
+      title: "Smart Collections Sidebar",
+      desc: "Organize files into dynamic collections like Brand Kit, Product Shots, 3D Props, and Sound Design.",
+      x: "10%",
+      y: "35%",
+    },
+    {
+      id: 1,
+      title: "Instant File Dropzone",
+      desc: "Drag-and-drop PSD, GLB, MOV, OTF, or WAV files to immediately extract EXIF and embedded metadata.",
+      x: "50%",
+      y: "32%",
+    },
+    {
+      id: 2,
+      title: "Command & Search Bar",
+      desc: "Sub-10ms inverted search query with ⌘K keyboard shortcut and instant file format filtering.",
+      x: "82%",
+      y: "8%",
+    },
+    {
+      id: 3,
+      title: "Audio & Media Previews",
+      desc: "Real-time visual waveforms, 3D glTF viewport controls, and quick-tagging inspectors.",
+      x: "30%",
+      y: "65%",
+    },
+  ];
+
+  return (
+    <section id="app-showcase" className="relative z-10 mx-auto max-w-6xl px-6 py-20">
+      <div className="text-center max-w-2xl mx-auto mb-12">
+        <div className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3 py-1 font-mono text-[11px] text-muted-foreground">
+          <Sparkles className="size-3 text-[#E8A33D]" />
+          <span>Real Desktop Experience</span>
+        </div>
+        <h2 className="mt-4 text-3xl sm:text-4xl font-medium tracking-tight text-foreground">
+          Built for speed. Designed for focus.
+        </h2>
+        <p className="mt-3 text-[14px] text-muted-foreground leading-relaxed">
+          Explore the Vaultgrid workspace interface. Engineered specifically to give creators complete control over their local asset archive.
+        </p>
+      </div>
+
+      {/* Main Desktop Window Display */}
+      <div className="relative rounded-2xl border border-border bg-surface shadow-[0_24px_50px_-12px_rgba(0,0,0,0.8)] overflow-hidden">
+        {/* Window Top Controls Bar */}
+        <div className="flex items-center justify-between border-b border-border bg-background/80 px-4 py-3 backdrop-blur">
+          <div className="flex items-center gap-2">
+            <span className="size-3 rounded-full bg-red-500/80 inline-block" />
+            <span className="size-3 rounded-full bg-yellow-500/80 inline-block" />
+            <span className="size-3 rounded-full bg-green-500/80 inline-block" />
+            <span className="ml-3 font-mono text-xs text-muted-foreground">Vaultgrid — Workspace Library</span>
+          </div>
+          <div className="flex items-center gap-3 text-xs font-mono text-muted-foreground">
+            <span className="hidden sm:inline-block">Vault size: 2.1 MB</span>
+            <span className="px-2 py-0.5 rounded bg-surface border border-border text-[10px]">v2.4.0</span>
+          </div>
+        </div>
+
+        {/* Real App Screenshot Preview Container with Hotspot Overlays */}
+        <div className="relative aspect-[16/9] w-full overflow-hidden bg-[#16140F]">
+          <img
+            src="/library-app-screenshot.png"
+            alt="Vaultgrid Library Workspace Screenshot"
+            className="w-full h-full object-cover object-top"
+          />
+
+          {/* Interactive Hotspot Overlay Pins */}
+          {HOTSPOTS.map((spot) => (
+            <button
+              key={spot.id}
+              onClick={() => setActiveHotspot(spot.id)}
+              style={{ left: spot.x, top: spot.y }}
+              className={`absolute -translate-x-1/2 -translate-y-1/2 group size-7 rounded-full border flex items-center justify-center transition-all ${
+                activeHotspot === spot.id
+                  ? "border-[#E8A33D] bg-[#E8A33D] text-[#16140F] scale-110 shadow-[0_0_15px_rgba(232,163,61,0.6)]"
+                  : "border-border bg-background/90 text-foreground hover:border-[#E8A33D]"
+              }`}
+            >
+              <span className="font-mono text-xs font-bold">{spot.id + 1}</span>
+            </button>
+          ))}
+        </div>
+
+        {/* Hotspot Description Cards Bar */}
+        <div className="grid sm:grid-cols-4 border-t border-border bg-surface p-4 gap-4 text-left">
+          {HOTSPOTS.map((spot) => (
+            <div
+              key={spot.id}
+              onClick={() => setActiveHotspot(spot.id)}
+              className={`p-3 rounded-xl border transition-all cursor-pointer ${
+                activeHotspot === spot.id
+                  ? "border-[#E8A33D]/50 bg-secondary shadow-sm"
+                  : "border-border/60 bg-background/50 hover:border-border"
+              }`}
+            >
+              <div className="flex items-center gap-2">
+                <span className="font-mono text-[11px] px-1.5 py-0.5 rounded bg-[#E8A33D]/20 text-[#E8A33D] font-bold">
+                  0{spot.id + 1}
+                </span>
+                <span className="text-xs font-semibold text-foreground truncate">{spot.title}</span>
+              </div>
+              <p className="mt-2 text-[12px] text-muted-foreground leading-snug">{spot.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }
 
