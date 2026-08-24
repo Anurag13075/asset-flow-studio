@@ -20,6 +20,7 @@ import {
   Search,
   CornerDownLeft,
 } from "lucide-react";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -194,11 +195,11 @@ function SearchDemoPanel() {
   const current = DEMO_QUERIES[index];
 
   return (
-    <div className="w-full max-w-2xl mx-auto mt-12 rounded-xl border border-[rgba(255,255,255,0.08)] bg-[#1D1B15] text-left shadow-[0_16px_36px_-16px_rgba(0,0,0,0.8)] overflow-hidden">
+    <div className="w-full max-w-2xl mx-auto mt-12 rounded-xl border border-border bg-surface text-left shadow-[0_16px_36px_-16px_rgba(0,0,0,0.8)] overflow-hidden">
       {/* Top command bar */}
-      <div className="flex items-center gap-3 px-4 py-3.5 border-b border-[rgba(255,255,255,0.08)] bg-[#1D1B15]">
-        <Search className="size-4 text-[#A39F8F] shrink-0" />
-        <div className="flex-1 font-mono text-sm text-[#F2EFE6] flex items-center gap-1 min-h-[20px]">
+      <div className="flex items-center gap-3 px-4 py-3.5 border-b border-border bg-surface">
+        <Search className="size-4 text-muted-foreground shrink-0" />
+        <div className="flex-1 font-mono text-sm text-foreground flex items-center gap-1 min-h-[20px]">
           <span
             className={`transition-opacity duration-200 ${
               fade ? "opacity-100" : "opacity-0"
@@ -208,7 +209,7 @@ function SearchDemoPanel() {
           </span>
           <span className="w-2 h-4 bg-[#E8A33D] inline-block animate-blink ml-0.5" />
         </div>
-        <div className="flex items-center gap-1.5 px-2 py-0.5 rounded border border-[rgba(255,255,255,0.08)] bg-[#16140F] font-mono text-[10px] text-[#A39F8F]">
+        <div className="flex items-center gap-1.5 px-2 py-0.5 rounded border border-border bg-background font-mono text-[10px] text-muted-foreground">
           <span>⌘K</span>
         </div>
       </div>
@@ -220,28 +221,28 @@ function SearchDemoPanel() {
           return (
             <div
               key={`${current.query}-${i}`}
-              className={`group flex items-center justify-between px-3 py-2.5 rounded-lg transition-all duration-200 hover:bg-[#24211A] ${
+              className={`group flex items-center justify-between px-3 py-2.5 rounded-lg transition-all duration-200 hover:bg-secondary ${
                 fade ? "opacity-100 translate-y-0" : "opacity-0 translate-y-1"
               }`}
               style={{ transitionDelay: `${i * 40}ms` }}
             >
               <div className="flex items-center gap-3 min-w-0 pr-4">
-                <div className="p-1.5 rounded border border-[rgba(255,255,255,0.08)] bg-[#16140F] text-[#A39F8F]">
+                <div className="p-1.5 rounded border border-border bg-background text-muted-foreground">
                   <Icon className="size-4" />
                 </div>
-                <div className="min-w-0 text-xs text-[#F2EFE6] truncate">
+                <div className="min-w-0 text-xs text-foreground truncate">
                   <HighlightedText text={res.name} match={res.match} />
                 </div>
               </div>
 
-              <div className="flex items-center gap-4 shrink-0 font-mono text-[11px] text-[#A39F8F]">
+              <div className="flex items-center gap-4 shrink-0 font-mono text-[11px] text-muted-foreground">
                 <span className="hidden sm:inline-block text-[11px] opacity-75">
                   {res.path}
                 </span>
-                <span className="px-1.5 py-0.5 rounded bg-[#16140F] border border-[rgba(255,255,255,0.06)] text-[10px]">
+                <span className="px-1.5 py-0.5 rounded bg-background border border-border text-[10px]">
                   {res.meta}
                 </span>
-                <CornerDownLeft className="size-3 text-[#A39F8F] opacity-0 group-hover:opacity-100 transition-opacity" />
+                <CornerDownLeft className="size-3 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
             </div>
           );
@@ -249,7 +250,7 @@ function SearchDemoPanel() {
       </div>
 
       {/* Footer bar */}
-      <div className="flex items-center justify-between px-4 py-2 border-t border-[rgba(255,255,255,0.08)] bg-[#16140F] font-mono text-[11px] text-[#A39F8F]">
+      <div className="flex items-center justify-between px-4 py-2 border-t border-border bg-background font-mono text-[11px] text-muted-foreground">
         <div className="flex items-center gap-2">
           <span className="size-1.5 rounded-full bg-[#4FBFA0]" />
           <span>3 matching assets indexed locally</span>
@@ -262,53 +263,56 @@ function SearchDemoPanel() {
 
 function Landing() {
   return (
-    <main className="relative min-h-screen bg-[#16140F] text-[#F2EFE6] overflow-hidden">
+    <main className="relative min-h-screen bg-background text-foreground overflow-hidden">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-180 grid-lines opacity-40 mask-[radial-gradient(70%_60%_at_50%_0%,black,transparent)]" />
 
       {/* Navigation Header */}
       <header className="relative z-10 mx-auto flex max-w-6xl items-center justify-between px-6 py-6">
         <Link to="/" className="flex items-center gap-2.5">
-          <span className="grid size-7 place-items-center rounded-md bg-[#E8A33D] text-[#16140F]">
+          <span className="grid size-7 place-items-center rounded-md bg-primary text-primary-foreground">
             <Boxes className="size-4" strokeWidth={2.2} />
           </span>
-          <span className="text-[15px] font-semibold tracking-tight text-[#F2EFE6]">
+          <span className="text-[15px] font-semibold tracking-tight text-foreground">
             Vaultgrid
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-7 text-[13px] text-[#A39F8F] md:flex">
-          <a href="#features" className="transition-colors hover:text-[#F2EFE6]">
+        <nav className="hidden items-center gap-7 text-[13px] text-muted-foreground md:flex">
+          <a href="#features" className="transition-colors hover:text-foreground">
             Features
           </a>
-          <a href="#canvas" className="transition-colors hover:text-[#F2EFE6]">
+          <a href="#canvas" className="transition-colors hover:text-foreground">
             Live canvas
           </a>
-          <a href="#workflow" className="transition-colors hover:text-[#F2EFE6]">
+          <a href="#workflow" className="transition-colors hover:text-foreground">
             Workflow
           </a>
-          <a href="#pricing" className="transition-colors hover:text-[#F2EFE6]">
+          <a href="#pricing" className="transition-colors hover:text-foreground">
             Pricing
           </a>
         </nav>
 
-        <Link
-          to="/auth"
-          className="rounded-lg border border-[rgba(255,255,255,0.08)] bg-[#1D1B15] px-3.5 py-1.5 text-[13px] font-medium text-[#F2EFE6] transition-colors hover:border-[rgba(255,255,255,0.18)]"
-        >
-          Open vault
-        </Link>
+        <div className="flex items-center gap-3">
+          <ThemeToggle />
+          <Link
+            to="/auth"
+            className="rounded-lg border border-border bg-surface px-3.5 py-1.5 text-[13px] font-medium text-foreground transition-colors hover:border-primary/50"
+          >
+            Open vault
+          </Link>
+        </div>
       </header>
 
       {/* Hero Section */}
       <section className="relative z-10 mx-auto max-w-5xl px-6 pb-20 pt-12 text-center">
         {/* Eyebrow label */}
-        <div className="rise font-mono text-xs text-[#A39F8F] tracking-wide">
+        <div className="rise font-mono text-xs text-muted-foreground tracking-wide">
           local index · one-time $2
         </div>
 
         {/* Restrained Headline */}
         <h1
-          className="rise mx-auto mt-5 max-w-2xl text-[34px] sm:text-[38px] lg:text-[40px] font-medium leading-[1.12] tracking-[-0.02em] text-[#F2EFE6]"
+          className="rise mx-auto mt-5 max-w-2xl text-[34px] sm:text-[38px] lg:text-[40px] font-medium leading-[1.12] tracking-[-0.02em] text-foreground"
           style={{ animationDelay: "60ms" }}
         >
           Every asset you own, findable in one keystroke.
@@ -316,7 +320,7 @@ function Landing() {
 
         {/* Subhead paragraph (max ~440px wide, centered) */}
         <p
-          className="rise mx-auto mt-4 max-w-[440px] text-[14px] leading-relaxed text-[#A39F8F]"
+          className="rise mx-auto mt-4 max-w-[440px] text-[14px] leading-relaxed text-muted-foreground"
           style={{ animationDelay: "120ms" }}
         >
           Vaultgrid indexes your design elements, video masters, 3D props and
@@ -338,7 +342,7 @@ function Landing() {
 
           <a
             href="#canvas"
-            className="text-[12px] text-[#A39F8F] transition-colors hover:text-[#F2EFE6] underline underline-offset-4"
+            className="text-[12px] text-muted-foreground transition-colors hover:text-foreground underline underline-offset-4"
           >
             Or explore the live canvas preview below
           </a>
@@ -351,9 +355,9 @@ function Landing() {
       </section>
 
       {/* File Types Marquee */}
-      <section className="relative z-10 border-y border-[rgba(255,255,255,0.08)] bg-[#1D1B15] py-3.5">
+      <section className="relative z-10 border-y border-border bg-surface py-3.5">
         <div className="flex overflow-hidden">
-          <div className="marquee flex shrink-0 gap-10 whitespace-nowrap pr-10 font-mono text-[11px] uppercase tracking-[0.2em] text-[#A39F8F]">
+          <div className="marquee flex shrink-0 gap-10 whitespace-nowrap pr-10 font-mono text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
             {Array.from({ length: 2 }).map((_, r) => (
               <span key={r} className="flex gap-10">
                 {[
@@ -387,10 +391,10 @@ function Landing() {
 
       {/* Features Grid */}
       <section id="features" className="relative z-10 mx-auto max-w-6xl px-6 py-20">
-        <h2 className="max-w-xl text-2xl sm:text-3xl font-medium tracking-[-0.02em] text-[#F2EFE6]">
+        <h2 className="max-w-xl text-2xl sm:text-3xl font-medium tracking-[-0.02em] text-foreground">
           Built for libraries that outgrew the Finder.
         </h2>
-        <p className="mt-3 max-w-lg text-[14px] text-[#A39F8F]">
+        <p className="mt-3 max-w-lg text-[14px] text-muted-foreground">
           Six core capabilities designed for serious local media archives.
         </p>
 
@@ -398,14 +402,14 @@ function Landing() {
           {FEATURES.map((f, i) => (
             <article
               key={f.title}
-              className="rise hover-lift rounded-xl border border-[rgba(255,255,255,0.08)] bg-[#1D1B15] p-5"
+              className="rise hover-lift rounded-xl border border-border bg-surface p-5"
               style={{ animationDelay: `${i * 50}ms` }}
             >
-              <f.icon className="size-5 text-[#F2EFE6]" strokeWidth={1.5} />
-              <h3 className="mt-4 text-[15px] font-medium tracking-tight text-[#F2EFE6]">
+              <f.icon className="size-5 text-foreground" strokeWidth={1.5} />
+              <h3 className="mt-4 text-[15px] font-medium tracking-tight text-foreground">
                 {f.title}
               </h3>
-              <p className="mt-2 text-[13px] leading-relaxed text-[#A39F8F]">
+              <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">
                 {f.body}
               </p>
             </article>
@@ -415,12 +419,12 @@ function Landing() {
 
       {/* Workflow Section */}
       <section id="workflow" className="relative z-10 mx-auto max-w-6xl px-6 pb-20">
-        <div className="grid gap-10 rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[#1D1B15] p-8 md:grid-cols-2 md:p-10">
+        <div className="grid gap-10 rounded-2xl border border-border bg-surface p-8 md:grid-cols-2 md:p-10">
           <div>
-            <h2 className="text-2xl sm:text-3xl font-medium tracking-[-0.02em] text-[#F2EFE6]">
+            <h2 className="text-2xl sm:text-3xl font-medium tracking-[-0.02em] text-foreground">
               Index once. Never hunt again.
             </h2>
-            <p className="mt-3 text-[14px] leading-relaxed text-[#A39F8F]">
+            <p className="mt-3 text-[14px] leading-relaxed text-muted-foreground">
               Point Vaultgrid at your local drives or external archives, and it builds a structured index of everything without moving or uploading a single file.
             </p>
 
@@ -443,10 +447,10 @@ function Landing() {
                 },
               ].map((s) => (
                 <li key={s.n} className="flex gap-4">
-                  <span className="font-mono text-xs text-[#A39F8F]">{s.n}</span>
+                  <span className="font-mono text-xs text-muted-foreground">{s.n}</span>
                   <div>
-                    <p className="text-[14px] font-medium text-[#F2EFE6]">{s.t}</p>
-                    <p className="text-[13px] text-[#A39F8F]">{s.d}</p>
+                    <p className="text-[14px] font-medium text-foreground">{s.t}</p>
+                    <p className="text-[13px] text-muted-foreground">{s.d}</p>
                   </div>
                 </li>
               ))}
@@ -462,13 +466,13 @@ function Landing() {
             ].map((s) => (
               <div
                 key={s.k}
-                className="rounded-xl border border-[rgba(255,255,255,0.08)] bg-[#16140F] p-4"
+                className="rounded-xl border border-border bg-background p-4"
               >
-                <s.icon className="size-4 text-[#F2EFE6]" strokeWidth={1.5} />
-                <p className="mt-3 text-base font-medium tracking-tight text-[#F2EFE6]">
+                <s.icon className="size-4 text-foreground" strokeWidth={1.5} />
+                <p className="mt-3 text-base font-medium tracking-tight text-foreground">
                   {s.k}
                 </p>
-                <p className="mt-1 text-[12px] leading-snug text-[#A39F8F]">
+                <p className="mt-1 text-[12px] leading-snug text-muted-foreground">
                   {s.v}
                 </p>
               </div>
@@ -479,22 +483,22 @@ function Landing() {
 
       {/* Pricing Section */}
       <section id="pricing" className="relative z-10 mx-auto max-w-3xl px-6 pb-24 text-center">
-        <h2 className="text-2xl sm:text-3xl font-medium tracking-[-0.02em] text-[#F2EFE6]">
+        <h2 className="text-2xl sm:text-3xl font-medium tracking-[-0.02em] text-foreground">
           One payment. Everything, forever.
         </h2>
-        <p className="mx-auto mt-3 max-w-md text-[14px] text-[#A39F8F]">
+        <p className="mx-auto mt-3 max-w-md text-[14px] text-muted-foreground">
           No subscriptions, no cloud tiers. Pay two dollars once and unlock lifetime access to your local vault.
         </p>
 
-        <div className="mx-auto mt-8 max-w-md rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[#1D1B15] p-8 text-left shadow-[0_16px_36px_-16px_rgba(0,0,0,0.8)]">
+        <div className="mx-auto mt-8 max-w-md rounded-2xl border border-border bg-surface p-8 text-left shadow-[0_16px_36px_-16px_rgba(0,0,0,0.8)]">
           <div className="flex items-end gap-2">
-            <span className="text-4xl font-semibold tracking-tight text-[#F2EFE6]">$2</span>
-            <span className="pb-1 text-xs font-mono text-[#A39F8F]">
+            <span className="text-4xl font-semibold tracking-tight text-foreground">$2</span>
+            <span className="pb-1 text-xs font-mono text-muted-foreground">
               once · lifetime access
             </span>
           </div>
 
-          <ul className="mt-6 space-y-2.5 text-[13px] text-[#A39F8F]">
+          <ul className="mt-6 space-y-2.5 text-[13px] text-muted-foreground">
             {[
               "Unlimited assets and local collections",
               "Instant sub-10ms search & filter system",
@@ -504,7 +508,7 @@ function Landing() {
               "All future updates included",
             ].map((f) => (
               <li key={f} className="flex items-start gap-2.5">
-                <span className="mt-1.5 size-1 shrink-0 rounded-full bg-[#A39F8F]" />
+                <span className="mt-1.5 size-1 shrink-0 rounded-full bg-muted-foreground" />
                 {f}
               </li>
             ))}
@@ -517,15 +521,15 @@ function Landing() {
             Get lifetime access
             <ArrowRight className="size-3.5" />
           </Link>
-          <p className="mt-3 text-center text-[11px] font-mono text-[#A39F8F]">
+          <p className="mt-3 text-center text-[11px] font-mono text-muted-foreground">
             Secure checkout via Polar · instant unlock
           </p>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="relative z-10 border-t border-[rgba(255,255,255,0.08)] py-8">
-        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-6 text-[12px] text-[#A39F8F] sm:flex-row">
+      <footer className="relative z-10 border-t border-border py-8">
+        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-6 text-[12px] text-muted-foreground sm:flex-row">
           <span>© {new Date().getFullYear()} Vaultgrid — local-first asset management.</span>
           <span className="font-mono">built for people with too many files</span>
         </div>
@@ -539,74 +543,74 @@ function LiveCanvas() {
     <section id="canvas" className="relative z-10 mx-auto max-w-6xl px-6 pb-20 pt-10">
       <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-[#A39F8F]">
+          <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
             Live canvas / try it now
           </p>
-          <h2 className="mt-2 text-2xl sm:text-3xl font-medium tracking-[-0.02em] text-[#F2EFE6]">
+          <h2 className="mt-2 text-2xl sm:text-3xl font-medium tracking-[-0.02em] text-foreground">
             Your whole vault, in one working space.
           </h2>
         </div>
-        <p className="max-w-xs text-right text-[13px] leading-relaxed text-[#A39F8F]">
+        <p className="max-w-xs text-right text-[13px] leading-relaxed text-muted-foreground">
           Import your own files and the canvas becomes a searchable working surface, without sending originals to a cloud.
         </p>
       </div>
 
-      <div className="overflow-hidden rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[#1D1B15] shadow-[0_16px_36px_-16px_rgba(0,0,0,0.8)]">
-        <div className="flex flex-wrap items-center gap-3 border-b border-[rgba(255,255,255,0.08)] bg-[#16140F] px-4 py-3">
-          <div className="flex items-center gap-2 text-xs font-medium text-[#F2EFE6]">
+      <div className="overflow-hidden rounded-2xl border border-border bg-surface shadow-[0_16px_36px_-16px_rgba(0,0,0,0.8)]">
+        <div className="flex flex-wrap items-center gap-3 border-b border-border bg-background px-4 py-3">
+          <div className="flex items-center gap-2 text-xs font-medium text-foreground">
             <span className="size-2 rounded-full bg-[#E8A33D]" />
             Canvas 01
           </div>
-          <div className="ml-auto flex items-center gap-2 text-[11px] font-mono text-[#A39F8F]">
+          <div className="ml-auto flex items-center gap-2 text-[11px] font-mono text-muted-foreground">
             <ScanSearch className="size-3.5" />
             Ready for your files
           </div>
         </div>
 
         <div className="grid min-h-[380px] md:grid-cols-[1fr_240px]">
-          <div className="relative overflow-hidden bg-[#16140F] grid-lines">
-            <div className="absolute inset-8 grid place-items-center rounded-xl border border-dashed border-[rgba(255,255,255,0.12)] bg-[#1D1B15]/50">
+          <div className="relative overflow-hidden bg-background grid-lines">
+            <div className="absolute inset-8 grid place-items-center rounded-xl border border-dashed border-border bg-surface/50">
               <div className="max-w-xs text-center">
-                <ScanSearch className="mx-auto size-7 text-[#A39F8F]" />
-                <p className="mt-3 text-sm font-medium text-[#F2EFE6]">
+                <ScanSearch className="mx-auto size-7 text-muted-foreground" />
+                <p className="mt-3 text-sm font-medium text-foreground">
                   Your canvas starts with your files
                 </p>
-                <p className="mt-1.5 text-xs leading-relaxed text-[#A39F8F]">
+                <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground">
                   Names, sizes, file types, and dates are read from each local import. Nothing is uploaded.
                 </p>
               </div>
             </div>
-            <div className="absolute bottom-4 left-4 rounded border border-[rgba(255,255,255,0.08)] bg-[#16140F] px-2.5 py-1 font-mono text-[10px] text-[#A39F8F]">
+            <div className="absolute bottom-4 left-4 rounded border border-border bg-background px-2.5 py-1 font-mono text-[10px] text-muted-foreground">
               Local workspace · waiting for import
             </div>
           </div>
 
-          <aside className="border-t border-[rgba(255,255,255,0.08)] bg-[#1D1B15] p-5 md:border-l md:border-t-0">
+          <aside className="border-t border-border bg-surface p-5 md:border-l md:border-t-0">
             <div className="flex items-center justify-between">
-              <span className="font-mono text-[10px] uppercase tracking-widest text-[#A39F8F]">
+              <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
                 Workspace preview
               </span>
-              <ShieldCheck className="size-4 text-[#A39F8F]" />
+              <ShieldCheck className="size-4 text-muted-foreground" />
             </div>
-            <h3 className="mt-4 text-base font-medium text-[#F2EFE6]">
+            <h3 className="mt-4 text-base font-medium text-foreground">
               Truthful metadata
             </h3>
-            <p className="mt-1 text-xs text-[#A39F8F]">
+            <p className="mt-1 text-xs text-muted-foreground">
               Only values read from your selected files
             </p>
 
-            <div className="mt-6 space-y-3.5 border-t border-[rgba(255,255,255,0.08)] pt-4 font-mono text-xs">
+            <div className="mt-6 space-y-3.5 border-t border-border pt-4 font-mono text-xs">
               <div className="flex justify-between">
-                <span className="text-[#A39F8F]">Source</span>
-                <span className="text-[#F2EFE6]">Your device</span>
+                <span className="text-muted-foreground">Source</span>
+                <span className="text-foreground">Your device</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-[#A39F8F]">Originals</span>
-                <span className="text-[#F2EFE6]">Never uploaded</span>
+                <span className="text-muted-foreground">Originals</span>
+                <span className="text-foreground">Never uploaded</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-[#A39F8F]">Access</span>
-                <span className="text-[#F2EFE6]">Private to you</span>
+                <span className="text-muted-foreground">Access</span>
+                <span className="text-foreground">Private to you</span>
               </div>
             </div>
 
