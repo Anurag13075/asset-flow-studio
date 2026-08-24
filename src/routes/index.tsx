@@ -4,9 +4,7 @@ import {
   ArrowRight,
   Boxes,
   Command,
-  FileCode,
   FileImage,
-  FileText,
   FileVideo,
   Fingerprint,
   Box,
@@ -19,6 +17,12 @@ import {
   Tags,
   Search,
   CornerDownLeft,
+  Package,
+  ShieldAlert,
+  HardDrive,
+  FileText,
+  RotateCcw,
+  CheckCircle2,
 } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
@@ -29,7 +33,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Index millions of design, video, 3D and font files on your own machine. Instant search, auto-tagging, duplicate radar and vault insights. $2 once, unlimited forever.",
+          "Index millions of design, video, 3D and font files on your own machine. Client delivery packaging, font conflict radar, drive awareness & contact sheet export. $2 once, unlimited forever.",
       },
       { property: "og:title", content: "Vaultgrid — Local-first asset manager" },
       {
@@ -158,6 +162,175 @@ const FEATURES = [
   },
 ];
 
+const PRO_SUITE_SHOWCASE = [
+  {
+    icon: Package,
+    badge: "1-Click Packaging",
+    title: "1. Client delivery packaging",
+    subtitle: "No more broken PSD smart objects or missing fonts",
+    description: "Vaultgrid traverses the asset dependency graph, resolves every linked file, collapses all file paths to relative, and bundles them into a clean .zip package.",
+    preview: (
+      <div className="rounded-xl border border-border bg-background p-4 font-mono text-xs space-y-2">
+        <div className="flex items-center justify-between text-muted-foreground border-b border-border/60 pb-2">
+          <span>hero_poster.psd</span>
+          <span className="text-primary font-semibold">1-Click ZIP</span>
+        </div>
+        <div className="space-y-1 text-[11px] text-muted-foreground">
+          <div className="flex justify-between text-emerald-400">
+            <span> ├── brandmark_v2.svg</span>
+            <span>(relative path)</span>
+          </div>
+          <div className="flex justify-between text-emerald-400">
+            <span> ├── InterTight-Medium.otf</span>
+            <span>(font link)</span>
+          </div>
+          <div className="flex justify-between text-emerald-400">
+            <span> └── studio_render_4k.png</span>
+            <span>(texture ref)</span>
+          </div>
+        </div>
+        <div className="pt-2 text-center text-[11px] text-[#E8A33D] font-semibold border-t border-border/40">
+          ✓ Exported hero_poster_delivery.zip
+        </div>
+      </div>
+    ),
+  },
+  {
+    icon: ShieldAlert,
+    badge: "Legal Compliance",
+    title: "2. License & usage tracking",
+    subtitle: "Never ship an asset with an unlicensed or personal tag",
+    description: "Tag fonts and stock assets with license types, expiry dates, and attribution requirements. Receive immediate warnings before delivering non-commercial assets.",
+    preview: (
+      <div className="rounded-xl border border-amber-500/30 bg-amber-500/5 p-4 space-y-2.5">
+        <div className="flex items-center justify-between text-xs font-semibold text-amber-300">
+          <span className="flex items-center gap-1.5"><ShieldAlert className="size-4 text-amber-400" /> Commercial Guard Alert</span>
+          <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-amber-500/20">EXPIRED</span>
+        </div>
+        <div className="text-xs text-foreground font-medium">tokyo_street_portrait.jpg</div>
+        <p className="text-[11px] text-muted-foreground leading-relaxed">
+          Tagged as <span className="text-amber-300 font-mono">Personal / Non-Commercial</span>. Expiry: 2024-05-01. Extended client rights required before export.
+        </p>
+      </div>
+    ),
+  },
+  {
+    icon: Layers,
+    badge: "Typographic Radar",
+    title: "3. Font conflict detector",
+    subtitle: "Catch text reflow bugs before your client opens the file",
+    description: "Detects when multiple versions of the same font family from different foundries or with differing metrics hashes are installed on your machine.",
+    preview: (
+      <div className="rounded-xl border border-border bg-background p-4 space-y-2 text-xs">
+        <div className="flex justify-between items-center text-foreground font-medium">
+          <span>Family: Inter Tight</span>
+          <span className="text-[10px] font-mono text-amber-400 bg-amber-500/10 px-1.5 py-0.5 rounded">2 Conflicts</span>
+        </div>
+        <div className="space-y-1.5 text-[11px] font-mono">
+          <div className="p-2 rounded border border-border bg-surface flex justify-between">
+            <span>InterTight-Medium.otf</span>
+            <span className="text-muted-foreground">Monotype (v2.004)</span>
+          </div>
+          <div className="p-2 rounded border border-amber-500/30 bg-amber-500/5 flex justify-between text-amber-200">
+            <span>InterTight-Medium.ttf</span>
+            <span className="text-amber-300">Google Fonts (v4.000)</span>
+          </div>
+        </div>
+      </div>
+    ),
+  },
+  {
+    icon: Box,
+    badge: "Deep Metadata",
+    title: "4. Real embedded metadata search",
+    subtitle: "Layer count, GLB vertices, WAV sample rates, EXIF",
+    description: "No AI fluff. Vaultgrid extracts layer counts from PSDs, vertex counts from 3D GLBs, sample rates from audio WAVs, and camera profiles right from file headers.",
+    preview: (
+      <div className="rounded-xl border border-border bg-background p-4 grid grid-cols-2 gap-2 font-mono text-[11px]">
+        <div className="p-2 rounded border border-border bg-surface">
+          <div className="text-muted-foreground text-[10px]">PSD LAYERS</div>
+          <div className="text-foreground font-semibold mt-0.5">48 layers</div>
+        </div>
+        <div className="p-2 rounded border border-border bg-surface">
+          <div className="text-muted-foreground text-[10px]">3D MESH VERTICES</div>
+          <div className="text-foreground font-semibold mt-0.5">142,800 verts</div>
+        </div>
+        <div className="p-2 rounded border border-border bg-surface">
+          <div className="text-muted-foreground text-[10px]">AUDIO SAMPLE RATE</div>
+          <div className="text-foreground font-semibold mt-0.5">96 kHz / 24-bit</div>
+        </div>
+        <div className="p-2 rounded border border-border bg-surface">
+          <div className="text-muted-foreground text-[10px]">EXIF CAMERA</div>
+          <div className="text-foreground font-semibold mt-0.5">Sony α7R V</div>
+        </div>
+      </div>
+    ),
+  },
+  {
+    icon: HardDrive,
+    badge: "Local First",
+    title: "5. Drive-aware storage tracking",
+    subtitle: "Know which external drive holds each asset",
+    description: "When an external archive drive is unplugged, Vaultgrid alerts you with '12 assets offline, reconnect LaCie Studio' instead of rendering mysterious broken thumbnails.",
+    preview: (
+      <div className="rounded-xl border border-border bg-background p-4 space-y-2 text-xs">
+        <div className="flex items-center justify-between">
+          <span className="flex items-center gap-1.5 font-medium text-amber-300">
+            <HardDrive className="size-4 text-amber-400 animate-pulse" /> LaCie Studio 4TB
+          </span>
+          <span className="font-mono text-[10px] text-amber-400 bg-amber-500/10 px-1.5 py-0.5 rounded">OFFLINE</span>
+        </div>
+        <p className="text-[11px] text-muted-foreground">
+          14 archived video masters offline. Reconnect drive <span className="font-mono text-foreground">/Volumes/LaCie_Studio</span> to access originals.
+        </p>
+      </div>
+    ),
+  },
+  {
+    icon: FileText,
+    badge: "Deterministic PDF",
+    title: "6. Contact sheet export",
+    subtitle: "1-Click PDF generation for client review",
+    description: "Generate clean, deterministic PDF handoff contact sheets complete with thumbnails, pixel dimensions, file size, and license specs with one click.",
+    preview: (
+      <div className="rounded-xl border border-border bg-background p-4 space-y-2 text-xs">
+        <div className="flex justify-between items-center text-muted-foreground">
+          <span className="font-semibold text-foreground">Vaultgrid_Contact_Sheet.pdf</span>
+          <span className="text-[10px] font-mono text-primary">A4 Printable</span>
+        </div>
+        <div className="p-2.5 rounded border border-border bg-surface flex items-center gap-3">
+          <div className="size-8 rounded bg-secondary grid place-items-center font-mono font-bold text-muted-foreground text-[10px]">PDF</div>
+          <div className="text-[11px]">
+            <div className="font-medium text-foreground">Client Review Handoff</div>
+            <div className="text-muted-foreground font-mono">24 assets · specs & license included</div>
+          </div>
+        </div>
+      </div>
+    ),
+  },
+  {
+    icon: RotateCcw,
+    badge: "Versioned Safety",
+    title: "7. Undo-safe vault operations",
+    subtitle: "Local versioned trash protects against accidental deletes",
+    description: "Every deletion inside Vaultgrid moves to a local versioned trash bin with instant single-click undo recovery. No raw OS deletes to ruin your day.",
+    preview: (
+      <div className="rounded-xl border border-border bg-background p-4 flex items-center justify-between text-xs">
+        <div className="flex items-center gap-2">
+          <RotateCcw className="size-4 text-primary" />
+          <div>
+            <div className="font-medium text-foreground">hero_campaign_v2.psd</div>
+            <div className="text-[11px] text-muted-foreground">Moved to versioned trash</div>
+          </div>
+        </div>
+        <button className="px-2.5 py-1 rounded bg-primary text-primary-foreground text-[11px] font-medium">
+          Undo Delete
+        </button>
+      </div>
+    ),
+  },
+];
+
 function HighlightedText({ text, match }: { text: string; match: string }) {
   if (!match) return <span>{text}</span>;
   const parts = text.split(new RegExp(`(${match})`, "gi"));
@@ -278,14 +451,14 @@ function Landing() {
         </Link>
 
         <nav className="hidden items-center gap-7 text-[13px] text-muted-foreground md:flex">
+          <a href="#showcase" className="transition-colors hover:text-foreground">
+            Pro Suite Showcase
+          </a>
           <a href="#features" className="transition-colors hover:text-foreground">
             Features
           </a>
           <a href="#canvas" className="transition-colors hover:text-foreground">
             Live canvas
-          </a>
-          <a href="#workflow" className="transition-colors hover:text-foreground">
-            Workflow
           </a>
           <a href="#pricing" className="transition-colors hover:text-foreground">
             Pricing
@@ -341,10 +514,10 @@ function Landing() {
           </Link>
 
           <a
-            href="#canvas"
+            href="#showcase"
             className="text-[12px] text-muted-foreground transition-colors hover:text-foreground underline underline-offset-4"
           >
-            Or explore the live canvas preview below
+            Or explore the new Pro Suite Showcase below
           </a>
         </div>
 
@@ -386,6 +559,54 @@ function Landing() {
         </div>
       </section>
 
+      {/* PRO SUITE SHOWCASE SECTION */}
+      <section id="showcase" className="relative z-10 mx-auto max-w-6xl px-6 py-24 border-b border-border">
+        <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
+          <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-[#E8A33D] font-semibold">
+            Freelancer & Studio Workflow Suite
+          </p>
+          <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight text-foreground">
+            Solves the single biggest pain points in asset management.
+          </h2>
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            Built specifically for creative freelancers and agencies handling multi-file client deliveries, font licenses, physical external drives, and deep metadata.
+          </p>
+        </div>
+
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {PRO_SUITE_SHOWCASE.map((item, idx) => {
+            const Icon = item.icon;
+            return (
+              <div
+                key={item.title}
+                className="rise hover-lift flex flex-col justify-between rounded-2xl border border-border bg-surface p-6 shadow-sm"
+                style={{ animationDelay: `${idx * 60}ms` }}
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="p-2.5 rounded-xl border border-border bg-background text-foreground">
+                      <Icon className="size-5 text-[#E8A33D]" />
+                    </span>
+                    <span className="font-mono text-[10px] uppercase tracking-wider px-2 py-0.5 rounded border border-border bg-background text-muted-foreground">
+                      {item.badge}
+                    </span>
+                  </div>
+                  <h3 className="text-base font-semibold text-foreground">{item.title}</h3>
+                  <p className="text-xs text-[#E8A33D] font-medium mt-0.5">{item.subtitle}</p>
+                  <p className="mt-2.5 text-xs text-muted-foreground leading-relaxed">
+                    {item.description}
+                  </p>
+                </div>
+
+                <div className="mt-5 pt-4 border-t border-border/60">
+                  {item.preview}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
       {/* Live Canvas Section */}
       <LiveCanvas />
 
@@ -395,7 +616,7 @@ function Landing() {
           Built for libraries that outgrew the Finder.
         </h2>
         <p className="mt-3 max-w-lg text-[14px] text-muted-foreground">
-          Six core capabilities designed for serious local media archives.
+          Core capabilities designed for serious local media archives.
         </p>
 
         <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -414,70 +635,6 @@ function Landing() {
               </p>
             </article>
           ))}
-        </div>
-      </section>
-
-      {/* Workflow Section */}
-      <section id="workflow" className="relative z-10 mx-auto max-w-6xl px-6 pb-20">
-        <div className="grid gap-10 rounded-2xl border border-border bg-surface p-8 md:grid-cols-2 md:p-10">
-          <div>
-            <h2 className="text-2xl sm:text-3xl font-medium tracking-[-0.02em] text-foreground">
-              Index once. Never hunt again.
-            </h2>
-            <p className="mt-3 text-[14px] leading-relaxed text-muted-foreground">
-              Point Vaultgrid at your local drives or external archives, and it builds a structured index of everything without moving or uploading a single file.
-            </p>
-
-            <ul className="mt-8 space-y-4">
-              {[
-                {
-                  n: "01",
-                  t: "Point at a folder",
-                  d: "Drives, NAS shares, project archives — all indexed in place.",
-                },
-                {
-                  n: "02",
-                  t: "Let it tag",
-                  d: "Kind, palette family, dimensions, and filename tokens become structured metadata.",
-                },
-                {
-                  n: "03",
-                  t: "Search like a database",
-                  d: "Combine tag + color + kind + collection, then hit ⌘K to jump anywhere.",
-                },
-              ].map((s) => (
-                <li key={s.n} className="flex gap-4">
-                  <span className="font-mono text-xs text-muted-foreground">{s.n}</span>
-                  <div>
-                    <p className="text-[14px] font-medium text-foreground">{s.t}</p>
-                    <p className="text-[13px] text-muted-foreground">{s.d}</p>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="grid grid-cols-2 gap-3 self-center">
-            {[
-              { icon: Layers, k: "Your files", v: "indexed in place from local folders" },
-              { icon: Sparkles, k: "Your metadata", v: "kept strictly on this machine" },
-              { icon: ScanSearch, k: "Your search", v: "filtered by name, type and tags" },
-              { icon: ShieldCheck, k: "Private by design", v: "originals never uploaded" },
-            ].map((s) => (
-              <div
-                key={s.k}
-                className="rounded-xl border border-border bg-background p-4"
-              >
-                <s.icon className="size-4 text-foreground" strokeWidth={1.5} />
-                <p className="mt-3 text-base font-medium tracking-tight text-foreground">
-                  {s.k}
-                </p>
-                <p className="mt-1 text-[12px] leading-snug text-muted-foreground">
-                  {s.v}
-                </p>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 
@@ -500,15 +657,17 @@ function Landing() {
 
           <ul className="mt-6 space-y-2.5 text-[13px] text-muted-foreground">
             {[
-              "Unlimited assets and local collections",
-              "Instant sub-10ms search & filter system",
-              "Duplicate radar and reclaim reports",
-              "Vault insights & vocabulary analytics",
-              "⌘K command palette and keyboard shortcuts",
+              "Client delivery packaging & 1-click ZIP exporter",
+              "License & usage tracking with commercial clearance radar",
+              "Font conflict detector for metrics & foundries",
+              "Real embedded metadata search (PSD, GLB, WAV, EXIF)",
+              "Drive-aware storage tracking (External volume offline alerts)",
+              "Deterministic contact sheet PDF exporter",
+              "Undo-safe versioned trash bin",
               "All future updates included",
             ].map((f) => (
               <li key={f} className="flex items-start gap-2.5">
-                <span className="mt-1.5 size-1 shrink-0 rounded-full bg-muted-foreground" />
+                <CheckCircle2 className="mt-0.5 size-3.5 shrink-0 text-[#E8A33D]" />
                 {f}
               </li>
             ))}
