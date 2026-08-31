@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import { type Asset, type Collection, DEFAULT_COLLECTIONS } from "./data";
 
-const KEY = "vaultgrid.v2";
+const KEY = "screenfast.v2";
 export const FREE_ACCESS_EMAIL = "anuragf863@gmail.com";
 
 export function isFreeAccessEmail(email: string) {

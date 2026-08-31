@@ -79,10 +79,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Vaultgrid — your asset vault" },
+      { title: "screenfast — your asset vault" },
       { name: "description", content: "A local-first asset vault for creative teams." },
-      { name: "author", content: "Vaultgrid" },
-      { property: "og:title", content: "Vaultgrid — your asset vault" },
+      { name: "author", content: "screenfast" },
+      { property: "og:title", content: "screenfast — your asset vault" },
       { property: "og:description", content: "A local-first asset vault for creative teams." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

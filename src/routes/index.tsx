@@ -8,13 +8,13 @@ import heroImg from "@/assets/hero.jpg";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Vaultgrid — Local-first asset manager for design studios" },
+      { title: "screenfast — Local-first asset manager for design studios" },
       {
         name: "description",
         content:
           "Index millions of design, video, 3D and font files on your own machine. Instant search, auto-tagging, duplicate radar and vault insights. $2 once, unlimited forever.",
       },
-      { property: "og:title", content: "Vaultgrid — Local-first asset manager" },
+      { property: "og:title", content: "screenfast — Local-first asset manager" },
       {
         property: "og:description",
         content: "Instant search across every design, video, 3D and font file you own. One $2 payment, unlimited forever.",
@@ -46,7 +46,7 @@ function Landing() {
           <span className="grid size-7 place-items-center rounded-md bg-primary text-primary-foreground">
             <Boxes className="size-4" strokeWidth={2} />
           </span>
-          <span className="text-[15px] font-semibold tracking-tight">Vaultgrid</span>
+          <span className="text-[15px] font-semibold tracking-tight">screenfast</span>
         </Link>
         <nav className="hidden items-center gap-7 text-[13px] text-muted-foreground md:flex">
           <a href="#features" className="transition-colors hover:text-foreground">Features</a>
@@ -73,7 +73,7 @@ function Landing() {
           <span className="text-gradient-amber">findable in one keystroke.</span>
         </h1>
         <p className="rise mx-auto mt-6 max-w-xl text-[15px] leading-relaxed text-muted-foreground" style={{ animationDelay: "120ms" }}>
-          Vaultgrid indexes your design elements, video masters, 3D props and typefaces where they already
+          screenfast indexes your design elements, video masters, 3D props and typefaces where they already
           live — then gives you instant search, palette filters and duplicate detection over the whole thing.
         </p>
         <div className="rise mt-9 flex flex-wrap items-center justify-center gap-3" style={{ animationDelay: "180ms" }}>
@@ -96,7 +96,7 @@ function Landing() {
           <div className="overflow-hidden rounded-2xl border border-border shadow-(--shadow-lift)">
             <img
               src={heroImg}
-              alt="Vaultgrid asset library preview with glass panels of design, 3D and video assets"
+              alt="screenfast asset library preview with glass panels of design, 3D and video assets"
               width={1600}
               height={1104}
               className="w-full"
@@ -151,7 +151,7 @@ function Landing() {
               Index once. Never hunt again.
             </h2>
             <p className="mt-4 text-[14px] leading-relaxed text-muted-foreground">
-              Point Vaultgrid at your drives, and it builds a structured index of everything — without moving,
+              Point screenfast at your drives, and it builds a structured index of everything — without moving,
               renaming or uploading a single file. Your originals stay exactly where your pipeline expects them.
             </p>
             <ul className="mt-7 space-y-4">
@@ -229,7 +229,7 @@ function Landing() {
 
       <footer className="relative z-10 border-t border-border py-8">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-6 text-[12px] text-muted-foreground sm:flex-row">
-          <span>© {new Date().getFullYear()} Vaultgrid — local-first asset management.</span>
+          <span>© {new Date().getFullYear()} screenfast — local-first asset management.</span>
           <span className="font-mono">built for people with too many files</span>
         </div>
       </footer>

@@ -20,3 +20,5 @@ export function Thumb({ asset, className = "" }: { asset: Asset; className?: str
     </div>
   );
 }
+
+

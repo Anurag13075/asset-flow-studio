@@ -8,9 +8,9 @@ import textureImg from "@/assets/texture.jpg";
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
-      { title: "Sign in — Vaultgrid" },
-      { name: "description", content: "Access your Vaultgrid asset vault. One account, one $2 lifetime unlock." },
-      { property: "og:title", content: "Sign in — Vaultgrid" },
+      { title: "Sign in — screenfast" },
+      { name: "description", content: "Access your screenfast asset vault. One account, one $2 lifetime unlock." },
+      { property: "og:title", content: "Sign in — screenfast" },
       { property: "og:description", content: "Access your local-first asset vault." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -50,7 +50,7 @@ function AuthPage() {
             <span className="grid size-7 place-items-center rounded-md bg-primary text-primary-foreground">
               <Boxes className="size-4" />
             </span>
-            <span className="text-[15px] font-semibold tracking-tight">Vaultgrid</span>
+            <span className="text-[15px] font-semibold tracking-tight">screenfast</span>
           </Link>
 
           <h1 className="mt-10 text-3xl font-semibold tracking-[-0.03em]">
@@ -120,7 +120,7 @@ function AuthPage() {
         <div className="absolute inset-0 bg-background/50" />
         <div className="relative flex h-full flex-col justify-end p-12">
           <blockquote className="max-w-md text-[22px] font-medium leading-snug tracking-[-0.02em]">
-            Keep your originals where they are. Vaultgrid gives the files you choose a searchable local index.
+            Keep your originals where they are. screenfast gives the files you choose a searchable local index.
           </blockquote>
           <p className="mt-4 text-[13px] text-muted-foreground">Local-first asset management</p>
         </div>

@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { useStore } from "@/lib/store";
 
 export const Route = createFileRoute("/checkout/success")({
-  head: () => ({ meta: [{ title: "Payment complete — Vaultgrid" }] }),
+  head: () => ({ meta: [{ title: "Payment complete — screenfast" }] }),
   component: CheckoutSuccessPage,
 });
 

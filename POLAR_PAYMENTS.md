@@ -1,11 +1,11 @@
 # Polar payments
 
-Vaultgrid sells one lifetime product for exactly **$2.00 USD** through Polar's hosted checkout. Card details never enter this app.
+screenfast sells one lifetime product for exactly **$2.00 USD** through Polar's hosted checkout. Card details never enter this app.
 
 ## Live checkout checklist
 
 1. Create or verify a Polar organization and complete its business and payout verification.
-2. Create a product named `Vaultgrid Lifetime Access`.
+2. Create a product named `screenfast Lifetime Access`.
 3. Add exactly one **one-time** price: `2.00 USD`. Do not use a recurring price.
 4. Create a checkout link for that product.
 5. Set the checkout success URL to `https://YOUR_DOMAIN/checkout/success?checkout_id={CHECKOUT_ID}` using Polar's checkout-id placeholder syntax.

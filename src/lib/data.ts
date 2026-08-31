@@ -22,7 +22,7 @@ export type Asset = {
   tags: string[];
   color: ColorFamily | null;
   collection: string;
-  bytes: number;
+  bytes: number;                
   width?: number | undefined;
   height?: number | undefined;
   duration?: number | undefined;
@@ -35,7 +35,7 @@ export type Asset = {
   favorite?: boolean | undefined;
 };
 
-export type Collection = { id: string; name: string; icon: string; smart?: string };
+export type Collection =  { id: string; name: string; icon: string; smart?: string };
 
 export const DEFAULT_COLLECTIONS: Collection[] = [
   { id: "unfiled", name: "Unfiled", icon: "Inbox" },
@@ -56,9 +56,10 @@ export function formatBytes(b: number) {
     n /= 1024;
     i++;
   } while (n >= 1024 && i < u.length - 1);
-  return `${n.toFixed(n < 10 ? 1 : 0)} ${u[i]}`;
+  return `${n.toFixed(n < 10 ? 1 : 0)} ${u[i]}`;   
 }
 
+   
 export function relTime(iso: string | null) {
   if (!iso) return "never";
   const diff = Date.now() - Date.parse(iso);
@@ -72,3 +73,4 @@ export function relTime(iso: string | null) {
 export function colorHex(id: string | null) {
   return COLOR_FAMILIES.find((c) => c.id === id)?.hex ?? "#7b8794";
 }
+
