@@ -863,7 +863,7 @@ function LineageTimeMachineSection() {
               <span>Revision intelligence</span>
             </div>
             <h2 className="mt-4 text-2xl font-medium tracking-tight text-foreground sm:text-3xl">
-              Visual Lineage Time Machine ends the “which final was final?” problem.
+              Visual Lineage Time Machine ends the "which final was final?" problem.
             </h2>
             <p className="mt-3 text-[14px] leading-relaxed text-muted-foreground">
               Client work gets expensive when nobody knows which source file,
@@ -1049,6 +1049,21 @@ function Landing() {
             View Library Interface
           </a>
         </div>
+
+        <a
+          href="https://startupbase.io/products/vaultgrod?utm_source=startupbase&utm_medium=badge&utm_campaign=launch-badge-light"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="rise mt-5 inline-flex rounded-lg border border-border bg-surface/70 p-2 shadow-[0_10px_24px_-18px_rgba(0,0,0,0.55)] transition-colors hover:border-primary/40"
+          style={{ animationDelay: "200ms" }}
+        >
+          <img
+            src="https://statics.startupbase.io/site/badges/launched-on-sb.svg"
+            alt="Launched on StartupBase"
+            height={55}
+            className="h-[55px] w-auto"
+          />
+        </a>
 
         {/* Quick Feature Stats Bar */}
         <div
