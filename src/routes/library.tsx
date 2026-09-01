@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { BarChart3, Boxes, Check, ChevronDown, Command, Grid2X2, List, LogOut, Search, SlidersHorizontal, Sparkles, X } from "lucide-react";
+import { BarChart3, Boxes, Check, ChevronDown, Command, Grid2X2, List, LogOut, Moon, Sun, Search, SlidersHorizontal, Sparkles, X } from "lucide-react";
 import { toast } from "sonner";
 import { AssetGrid, AssetList } from "@/components/app/AssetGrid";
 import { CommandPalette, PALETTE_ICONS, type PaletteAction } from "@/components/app/CommandPalette";
@@ -8,6 +8,8 @@ import { DetailPanel } from "@/components/app/DetailPanel";
 import { Dropzone } from "@/components/app/Dropzone";
 import { Insights } from "@/components/app/Insights";
 import { Sidebar, type SmartView } from "@/components/app/Sidebar";
+import { ThemeToggle } from "@/components/ThemeToggle";
+import { useTheme } from "@/lib/theme";
 import { KINDS, type Asset } from "@/lib/data";
 import { isFreeAccessEmail, useHotkey, useStore } from "@/lib/store";
 
@@ -18,6 +20,7 @@ export const Route = createFileRoute("/library")({
 
 function LibraryPage() {
   const { ready, user, paid, assets, collections, signOut, updateAsset, removeAssets, addAssets, addCollection } = useStore();
+  const { setTheme } = useTheme();
   const navigate = useNavigate();
   const [active, setActive] = useState<{ view: SmartView; collection: string | null }>({ view: "all", collection: null });
   const [query, setQuery] = useState("");
@@ -42,6 +45,8 @@ function LibraryPage() {
     { id: "grid", label: "Show grid", icon: PALETTE_ICONS.LayoutGrid, run: () => setLayout("grid") },
     { id: "list", label: "Show list", icon: PALETTE_ICONS.List, run: () => setLayout("list") },
     { id: "insights", label: "Open insights", icon: PALETTE_ICONS.BarChart3, run: () => setTab("insights") },
+    { id: "theme-dark", label: "Switch to Dark Theme", icon: Moon, run: () => setTheme("dark") },
+    { id: "theme-light", label: "Switch to Light Theme", icon: Sun, run: () => setTheme("light") },
     { id: "clear", label: "Clear filters", icon: PALETTE_ICONS.Layers, run: () => { setQuery(""); setKind("all"); setColor("all"); } },
   ];
 
@@ -58,7 +63,7 @@ function LibraryPage() {
   return <div className="flex h-screen min-h-[620px] overflow-hidden bg-background">
     <Sidebar collections={collections} assets={assets} active={active} onSelect={(next) => { setActive(next); setSelected(null); setTab("library"); }} onAddCollection={addCollection} />
     <main className="min-w-0 flex-1 overflow-y-auto">
-      <header className="sticky top-0 z-20 border-b border-border bg-background/90 px-5 py-3 backdrop-blur-xl lg:px-7"><div className="flex items-center gap-3"><Link to="/" className="mr-1 flex items-center gap-2 lg:hidden"><span className="grid size-7 place-items-center rounded-md bg-primary text-primary-foreground"><Boxes className="size-4" /></span></Link><div className="flex items-center gap-1 rounded-lg border border-border bg-surface p-1"><TabButton active={tab === "library"} onClick={() => setTab("library")}>Library</TabButton><TabButton active={tab === "insights"} onClick={() => setTab("insights")}>Insights</TabButton></div><div className="ml-auto flex items-center gap-2"><button onClick={() => setPaletteOpen(true)} className="hidden items-center gap-2 rounded-lg border border-border bg-surface px-3 py-1.5 text-xs text-muted-foreground sm:flex"><Search className="size-3.5" />Search vault <kbd className="ml-3 rounded border border-border px-1 font-mono text-[10px]"><Command className="inline size-2.5" /> K</kbd></button><button onClick={() => { signOut(); navigate({ to: "/" }); }} className="rounded-lg p-2 text-muted-foreground hover:bg-secondary hover:text-foreground" aria-label="Sign out"><LogOut className="size-4" /></button></div></div></header>
+      <header className="sticky top-0 z-20 border-b border-border bg-background/90 px-5 py-3 backdrop-blur-xl lg:px-7"><div className="flex items-center gap-3"><Link to="/" className="mr-1 flex items-center gap-2 lg:hidden"><span className="grid size-7 place-items-center rounded-md bg-primary text-primary-foreground"><Boxes className="size-4" /></span></Link><div className="flex items-center gap-1 rounded-lg border border-border bg-surface p-1"><TabButton active={tab === "library"} onClick={() => setTab("library")}>Library</TabButton><TabButton active={tab === "insights"} onClick={() => setTab("insights")}>Insights</TabButton></div><div className="ml-auto flex items-center gap-2"><ThemeToggle /><button onClick={() => setPaletteOpen(true)} className="hidden items-center gap-2 rounded-lg border border-border bg-surface px-3 py-1.5 text-xs text-muted-foreground sm:flex"><Search className="size-3.5" />Search vault <kbd className="ml-3 rounded border border-border px-1 font-mono text-[10px]"><Command className="inline size-2.5" /> K</kbd></button><button onClick={() => { signOut(); navigate({ to: "/" }); }} className="rounded-lg p-2 text-muted-foreground hover:bg-secondary hover:text-foreground" aria-label="Sign out"><LogOut className="size-4" /></button></div></div></header>
       <div className="mx-auto max-w-[1500px] p-5 lg:p-7">{tab === "insights" ? <Insights assets={assets} /> : <><div className="flex flex-wrap items-end justify-between gap-4"><div><p className="text-[11px] font-semibold uppercase tracking-widest text-primary">{active.collection ? collections.find((c) => c.id === active.collection)?.name : active.view === "all" ? "Workspace" : active.view}</p><h1 className="mt-1 text-2xl font-semibold tracking-tight">{visible.length.toLocaleString()} assets</h1></div><div className="flex items-center gap-2"><button onClick={() => setLayout("grid")} className={`rounded-lg border p-2 ${layout === "grid" ? "border-primary/50 bg-secondary" : "border-border text-muted-foreground"}`} aria-label="Grid view"><Grid2X2 className="size-4" /></button><button onClick={() => setLayout("list")} className={`rounded-lg border p-2 ${layout === "list" ? "border-primary/50 bg-secondary" : "border-border text-muted-foreground"}`} aria-label="List view"><List className="size-4" /></button></div></div><div className="mt-5"><Dropzone onFiles={addAssets} /></div><div className="mt-4 flex flex-wrap items-center gap-2"><div className="flex min-w-[220px] flex-1 items-center gap-2 rounded-lg border border-input bg-surface px-3 py-2"><Search className="size-4 text-muted-foreground" /><input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search by name, tag, or type" className="w-full bg-transparent text-sm outline-none placeholder:text-muted-foreground" />{query && <button onClick={() => setQuery("")} aria-label="Clear search"><X className="size-3.5 text-muted-foreground" /></button>}</div><Filter value={kind} onChange={setKind} options={["all", ...KINDS]} /><Filter value={color} onChange={setColor} options={["all", "amber", "crimson", "teal", "lime", "violet", "slate", "ink"]} /><button className="rounded-lg border border-border p-2 text-muted-foreground hover:bg-secondary" aria-label="Filter options"><SlidersHorizontal className="size-4" /></button></div><div className="mt-5">{visible.length === 0 ? <div className="surface-panel rounded-xl p-12 text-center text-sm text-muted-foreground">No assets match these filters.</div> : layout === "grid" ? <AssetGrid assets={visible} selectedId={selected?.id ?? null} onSelect={setSelected} onToggleFavorite={(a) => updateAsset(a.id, { favorite: !a.favorite })} /> : <AssetList assets={visible} selectedId={selected?.id ?? null} onSelect={setSelected} />}</div></>}</div>
     </main>
     {selected && <DetailPanel asset={selected} all={assets} onClose={() => setSelected(null)} onUpdate={(patch) => { updateAsset(selected.id, patch); setSelected({ ...selected, ...patch }); }} onDelete={() => { removeAssets([selected.id]); setSelected(null); toast.success("Asset removed"); }} />}
