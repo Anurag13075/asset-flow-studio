@@ -156,6 +156,16 @@ const FEATURES = [
     body: "Catch commercial-use gaps, unknown licenses and client handoff conflicts across a whole collection before export.",
   },
   {
+    icon: Sparkles,
+    title: "AI context packs",
+    body: "Turn a collection into a prompt-ready brief with asset roles, style tokens, license notes, and negative constraints for any AI tool.",
+  },
+  {
+    icon: GitBranch,
+    title: "Visual lineage time machine",
+    body: "Trace every export back to the exact source files, fonts, textures, versions, and decisions that created it.",
+  },
+  {
     icon: Fingerprint,
     title: "Duplicate radar",
     body: "Review files with matching names and related metadata before you remove an unnecessary copy.",
@@ -207,6 +217,22 @@ const BEST_FEATURES = [
     metric: "84.2 MB reclaimed",
     href: "#duplicate-radar",
   },
+  {
+    icon: Sparkles,
+    label: "AI workflow",
+    title: "AI Context Packs",
+    body: "Send a model the right creative context without uploading originals or rewriting the brief from memory.",
+    metric: "14 tokens mapped",
+    href: "#ai-context-packs",
+  },
+  {
+    icon: GitBranch,
+    label: "Undo chaos",
+    title: "Visual Lineage Time Machine",
+    body: "Know which source, edit, font, texture, and approval produced the final file your client wants changed.",
+    metric: "31 decisions traced",
+    href: "#lineage-time-machine",
+  },
 ];
 
 function HighlightedText({ text, match }: { text: string; match: string }) {
@@ -230,7 +256,8 @@ function HighlightedText({ text, match }: { text: string; match: string }) {
 function BestFeatureHighlights() {
   return (
     <section id="highlights" className="relative z-10 mx-auto max-w-6xl px-6 pb-8">
-      <div className="grid overflow-hidden rounded-2xl border border-primary/25 bg-surface shadow-[0_24px_70px_-28px_rgba(0,0,0,0.55)] lg:grid-cols-[1.05fr_1fr_1fr]">
+      <div className="rounded-2xl border border-primary/25 bg-surface p-2 shadow-[0_24px_70px_-28px_rgba(0,0,0,0.55)]">
+        <div className="grid gap-2 md:grid-cols-2 xl:grid-cols-5">
         {BEST_FEATURES.map((feature, index) => {
           const Icon = feature.icon;
           const isFlagship = index === 0;
@@ -239,9 +266,9 @@ function BestFeatureHighlights() {
             <a
               key={feature.title}
               href={feature.href}
-              className={`group relative min-h-[260px] border-border p-6 text-left transition-colors hover:bg-secondary/50 ${
-                index > 0 ? "border-t lg:border-l lg:border-t-0" : ""
-              } ${isFlagship ? "bg-background/65" : "bg-surface"}`}
+              className={`group relative min-h-[250px] rounded-xl border border-border p-5 text-left transition-colors hover:bg-secondary/50 ${
+                isFlagship ? "bg-background/65 xl:col-span-1" : "bg-surface"
+              }`}
             >
               {isFlagship && (
                 <div className="pointer-events-none absolute inset-x-0 top-0 h-1 bg-primary" />
@@ -289,6 +316,7 @@ function BestFeatureHighlights() {
             </a>
           );
         })}
+        </div>
       </div>
     </section>
   );
@@ -661,6 +689,267 @@ function LicenseFirewallSection() {
   );
 }
 
+function AiContextPacksSection() {
+  const [mode, setMode] = useState<"ad" | "product" | "brand">("ad");
+
+  const packs = {
+    ad: {
+      title: "Paid social launch",
+      output: "Prompt pack for Meta, Midjourney, Runway, and editor handoff",
+      assets: ["hero_banner_blue_v3.psd", "product_demo_4k_master.mp4", "InterTight-Variable.woff2"],
+      tokens: ["blue glass UI", "warm key light", "fast product cuts", "no stock-photo hands"],
+      proof: "Commercial license attached for 8 of 8 export assets",
+    },
+    product: {
+      title: "3D catalog refresh",
+      output: "Prompt pack for render variation, texture cleanup, and AR thumbnails",
+      assets: ["lounge_chair_turntable.glb", "walnut_pbr_albedo.exr", "studio_lighting_4k.hdr"],
+      tokens: ["walnut texture", "softbox reflection", "matte metal feet", "no geometry edits"],
+      proof: "Original mesh, PBR maps, and HDRI traced from local project folders",
+    },
+    brand: {
+      title: "Brand system expansion",
+      output: "Prompt pack for logo variants, icon sets, and web section art",
+      assets: ["brandmark_vector_blue.svg", "design_system_tokens.fig", "app_icon_dark_blue.png"],
+      tokens: ["teal accent only", "tight grid spacing", "rounded 8px UI", "no purple gradients"],
+      proof: "Brand constraints and source vectors included without uploading originals",
+    },
+  };
+
+  const current = packs[mode];
+
+  return (
+    <section id="ai-context-packs" className="relative z-10 mx-auto max-w-6xl px-6 py-16">
+      <div className="grid gap-8 rounded-2xl border border-border bg-surface p-8 md:p-10 lg:grid-cols-[0.85fr_1.15fr]">
+        <div className="text-left">
+          <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 font-mono text-[11px] text-foreground">
+            <Sparkles className="size-3.5 text-primary" />
+            <span>New premium workflow</span>
+          </div>
+          <h2 className="mt-4 text-2xl font-medium tracking-tight text-foreground sm:text-3xl">
+            AI Context Packs make every model understand your project on the first try.
+          </h2>
+          <p className="mt-3 text-[14px] leading-relaxed text-muted-foreground">
+            Designers waste paid AI generations because the model never sees the
+            real brand kit, source files, usage rights, or forbidden styles.
+            Vaultgrid turns a local collection into a structured context pack
+            with source assets, style tokens, license proof, and negative prompts.
+          </p>
+
+          <div className="mt-7 grid gap-3 sm:grid-cols-3">
+            {[
+              ["Context", "Asset roles + style DNA"],
+              ["Rights", "License-safe prompts"],
+              ["Handoff", "Ready for AI tools"],
+            ].map(([label, value]) => (
+              <div key={label} className="rounded-xl border border-border bg-background p-4">
+                <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">{label}</p>
+                <p className="mt-2 text-[13px] font-medium text-foreground">{value}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="overflow-hidden rounded-xl border border-border bg-background text-left">
+          <div className="flex flex-wrap items-center gap-2 border-b border-border bg-surface p-3">
+            {[
+              ["ad", "Ad launch"],
+              ["product", "3D catalog"],
+              ["brand", "Brand system"],
+            ].map(([id, label]) => (
+              <button
+                key={id}
+                onClick={() => setMode(id as typeof mode)}
+                className={`rounded-lg px-3 py-2 text-xs font-medium transition-colors ${
+                  mode === id
+                    ? "bg-primary text-primary-foreground"
+                    : "border border-border bg-background text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+
+          <div className="grid gap-0 md:grid-cols-[1fr_230px]">
+            <div className="p-5">
+              <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+                Generated context pack
+              </p>
+              <h3 className="mt-2 text-xl font-medium text-foreground">{current.title}</h3>
+              <p className="mt-1 text-xs text-muted-foreground">{current.output}</p>
+
+              <div className="mt-5 space-y-2">
+                {current.assets.map((asset, index) => (
+                  <div key={asset} className="flex items-center gap-3 rounded-lg border border-border bg-surface px-3 py-2">
+                    <div className="grid size-7 place-items-center rounded-md bg-background text-muted-foreground">
+                      {index === 1 ? <FileVideo className="size-3.5" /> : <FileText className="size-3.5" />}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate font-mono text-[11px] text-foreground">{asset}</p>
+                      <p className="text-[10px] text-muted-foreground">role mapped from filename, tags, and collection</p>
+                    </div>
+                    <Check className="size-3.5 text-[#4FBFA0]" />
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-5 rounded-lg border border-border bg-surface p-4">
+                <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">Prompt constraints</p>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {current.tokens.map((token) => (
+                    <span key={token} className="rounded-md border border-border bg-background px-2 py-1 font-mono text-[10px] text-foreground">
+                      {token}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <aside className="border-t border-border bg-surface p-5 md:border-l md:border-t-0">
+              <ClipboardCheck className="size-5 text-primary" />
+              <p className="mt-4 text-sm font-medium text-foreground">Ready to paste</p>
+              <p className="mt-2 text-xs leading-relaxed text-muted-foreground">{current.proof}</p>
+              <div className="mt-5 rounded-lg border border-[#4FBFA0]/30 bg-[#4FBFA0]/10 p-3 font-mono text-[11px] text-[#4FBFA0]">
+                Context quality: 96%
+              </div>
+              <button className="mt-5 flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-3 py-2.5 text-xs font-semibold text-primary-foreground">
+                Export context pack
+                <ArrowRight className="size-3.5" />
+              </button>
+            </aside>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function LineageTimeMachineSection() {
+  const [activeStep, setActiveStep] = useState(2);
+
+  const steps = [
+    {
+      label: "Source capture",
+      title: "Raw footage + brand kit indexed",
+      detail: "Imported MOV masters, vectors, fonts, and source PSDs from the launch drive.",
+    },
+    {
+      label: "Edit decisions",
+      title: "Campaign cut assembled",
+      detail: "Tracked the exact logo, font, LUT, music bed, and render preset used in the edit.",
+    },
+    {
+      label: "Client delivery",
+      title: "Final export approved",
+      detail: "Generated social crops, proof manifest, and client-safe package from approved dependencies.",
+    },
+    {
+      label: "Future change",
+      title: "Revision source restored",
+      detail: "Find the exact files needed when the client asks for a new size six months later.",
+    },
+  ];
+
+  const active = steps[activeStep];
+
+  return (
+    <section id="lineage-time-machine" className="relative z-10 mx-auto max-w-6xl px-6 py-16">
+      <div className="overflow-hidden rounded-2xl border border-border bg-surface shadow-xl">
+        <div className="grid gap-0 lg:grid-cols-[0.95fr_1.05fr]">
+          <div className="border-b border-border p-8 md:p-10 lg:border-b-0 lg:border-r">
+            <div className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-3 py-1 font-mono text-[11px] text-muted-foreground">
+              <GitBranch className="size-3.5 text-primary" />
+              <span>Revision intelligence</span>
+            </div>
+            <h2 className="mt-4 text-2xl font-medium tracking-tight text-foreground sm:text-3xl">
+              Visual Lineage Time Machine ends the “which final was final?” problem.
+            </h2>
+            <p className="mt-3 text-[14px] leading-relaxed text-muted-foreground">
+              Client work gets expensive when nobody knows which source file,
+              render preset, font, or exported revision produced the approved
+              version. Vaultgrid records the chain so any future change starts
+              from the right dependencies.
+            </p>
+
+            <div className="mt-7 space-y-3">
+              {steps.map((step, index) => (
+                <button
+                  key={step.label}
+                  onClick={() => setActiveStep(index)}
+                  className={`flex w-full items-start gap-3 rounded-xl border p-3 text-left transition-colors ${
+                    activeStep === index
+                      ? "border-primary/40 bg-primary/10"
+                      : "border-border bg-background hover:bg-secondary/60"
+                  }`}
+                >
+                  <span className={`mt-0.5 grid size-7 shrink-0 place-items-center rounded-md font-mono text-[10px] ${
+                    activeStep === index ? "bg-primary text-primary-foreground" : "bg-surface text-muted-foreground"
+                  }`}>
+                    0{index + 1}
+                  </span>
+                  <span>
+                    <span className="block text-xs font-medium text-foreground">{step.label}</span>
+                    <span className="mt-1 block text-[11px] leading-relaxed text-muted-foreground">{step.detail}</span>
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="bg-background p-5 md:p-8">
+            <div className="rounded-xl border border-border bg-surface p-5 text-left">
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">Selected timeline state</p>
+                  <h3 className="mt-2 text-xl font-medium text-foreground">{active.title}</h3>
+                </div>
+                <span className="rounded-md border border-[#4FBFA0]/30 bg-[#4FBFA0]/10 px-2 py-1 font-mono text-[10px] text-[#4FBFA0]">
+                  restorable
+                </span>
+              </div>
+
+              <div className="mt-6 grid gap-3 sm:grid-cols-2">
+                {[
+                  ["Source files", activeStep + 8],
+                  ["Linked decisions", activeStep * 7 + 17],
+                  ["License records", activeStep + 4],
+                  ["Export targets", activeStep * 2 + 3],
+                ].map(([label, value]) => (
+                  <div key={label} className="rounded-lg border border-border bg-background p-4">
+                    <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">{label}</p>
+                    <p className="mt-2 text-2xl font-semibold text-foreground">{value}</p>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-6 rounded-lg border border-border bg-background p-4">
+                <div className="flex items-center gap-2 text-xs font-medium text-foreground">
+                  <DatabaseZap className="size-4 text-primary" />
+                  Exact restore set
+                </div>
+                <div className="mt-4 space-y-2 font-mono text-[11px]">
+                  {["launch_master_v12.prproj", "brandmark_vector_blue.svg", "NeueGrotesk_Display.otf", "social_9x16_export_recipe.json"].map((file) => (
+                    <div key={file} className="flex items-center justify-between gap-3 border-b border-border/60 pb-2 last:border-0 last:pb-0">
+                      <span className="truncate text-muted-foreground">{file}</span>
+                      <span className="text-foreground">found</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <button className="mt-5 flex w-full items-center justify-center gap-2 rounded-lg border border-border bg-surface px-3 py-2.5 text-xs font-semibold text-foreground transition-colors hover:border-primary/40">
+                Restore this working state
+                <ArchiveRestore className="size-3.5 text-primary" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function Landing() {
   return (
     <main className="relative min-h-screen bg-background text-foreground overflow-hidden">
@@ -683,6 +972,9 @@ function Landing() {
           </a>
           <a href="#rescue" className="transition-colors hover:text-foreground">
             Flagship
+          </a>
+          <a href="#ai-context-packs" className="transition-colors hover:text-foreground">
+            AI packs
           </a>
           <a href="#features" className="transition-colors hover:text-foreground">
             Features
@@ -834,6 +1126,12 @@ function Landing() {
       {/* App Interface Showcase Section */}
       <AppInterfaceShowcase />
 
+      {/* AI Context Packs Section */}
+      <AiContextPacksSection />
+
+      {/* Visual Lineage Time Machine Section */}
+      <LineageTimeMachineSection />
+
       {/* Format Explorer Section */}
       <FormatExplorer />
 
@@ -852,7 +1150,7 @@ function Landing() {
           Built for libraries that outgrew the Finder.
         </h2>
         <p className="mt-3 max-w-lg text-[14px] text-muted-foreground">
-          Eight core capabilities designed for serious local media archives.
+          Ten core capabilities designed for serious local media archives.
         </p>
 
         <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -973,6 +1271,8 @@ function Landing() {
             {[
               "Unlimited asset indexing & local collections",
               "Sub-10ms instant command search system",
+              "AI context packs for model-ready creative briefs",
+              "Visual lineage time machine for restoring exact source states",
               "Duplicate radar & storage reclaim optimizer",
               "Vault insights & working vocabulary analytics",
               "Cmd+K command palette with full keyboard navigation",
