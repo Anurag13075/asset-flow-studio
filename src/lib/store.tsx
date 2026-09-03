@@ -1,4 +1,12 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from "react";
 import { type Asset, type Collection, DEFAULT_COLLECTIONS } from "./data";
 
 const KEY = "screenfast.v2";
@@ -12,7 +20,7 @@ type Persisted = {
   assets: Asset[];
   collections: Collection[];
   user: { email: string; name: string } | null;
-  paid: boolean;
+  paidEmail: string | null;
 };
 
 type Store = Persisted & {
@@ -29,7 +37,7 @@ type Store = Persisted & {
 const Ctx = createContext<Store | null>(null);
 
 function initial(): Persisted {
-  return { assets: [], collections: DEFAULT_COLLECTIONS, user: null, paid: false };
+  return { assets: [], collections: DEFAULT_COLLECTIONS, user: null, paidEmail: null };
 }
 
 function kindFromName(name: string): Asset["kind"] {
@@ -49,7 +57,14 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     try {
       const raw = localStorage.getItem(KEY);
-      if (raw) setState({ ...initial(), ...(JSON.parse(raw) as Persisted) });
+      if (raw) {
+        const stored = JSON.parse(raw) as Persisted & { paid?: boolean };
+        setState({
+          ...initial(),
+          ...stored,
+          paidEmail: stored.paidEmail ?? (stored.paid ? (stored.user?.email ?? null) : null),
+        });
+      }
     } catch {
       /* ignore */
     }
@@ -75,13 +90,15 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         setState((s) => ({
           ...s,
           user: { email: normalizedEmail, name: normalizedEmail.split("@")[0] ?? "designer" },
-          paid: s.paid || isFreeAccessEmail(normalizedEmail),
         }));
       },
       signOut: () => setState((s) => ({ ...s, user: null })),
-      grantAccess: () => setState((s) => ({ ...s, paid: true })),
+      grantAccess: () => setState((s) => ({ ...s, paidEmail: s.user?.email ?? s.paidEmail })),
       updateAsset: (id, patch) =>
-        setState((s) => ({ ...s, assets: s.assets.map((a) => (a.id === id ? { ...a, ...patch } : a)) })),
+        setState((s) => ({
+          ...s,
+          assets: s.assets.map((a) => (a.id === id ? { ...a, ...patch } : a)),
+        })),
       removeAssets: (ids) =>
         setState((s) => ({ ...s, assets: s.assets.filter((a) => !ids.includes(a.id)) })),
       addAssets: (files) => {

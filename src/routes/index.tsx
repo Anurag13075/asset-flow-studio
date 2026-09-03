@@ -1,5 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import "../styles.css"
+
 import {
   AlertTriangle,
   ArrowRight,
@@ -1155,8 +1157,9 @@ function Landing() {
 
         {/* Restrained Headline */}
         <h1
-          className="rise mx-auto mt-6 max-w-3xl text-[36px] sm:text-[44px] lg:text-[48px] font-medium leading-[1.1] tracking-[-0.025em] text-foreground"
+          className="rise mx-auto mt-6 max-w-3xl  animate-movehero  text-[36px] sm:text-[44px] lg:text-[48px] font-medium leading-[1.1] tracking-[-0.025em] text-foreground"
           style={{ animationDelay: "60ms" }}
+        
         >
           Every asset you own, findable in one keystroke.
         </h1>

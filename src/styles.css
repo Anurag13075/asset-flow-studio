@@ -224,6 +224,25 @@
     transform: translateX(-50%);
   }
 }
+@theme {
+  --animate-movehero: movehero 0.8s cubic-bezier(0.16, 1 , 0.3 ,1 ) forwards 
+
+}
+@keyframes movehero {
+  0% {
+    opacity: 0;
+    transform:translate(40px) scale(0.96);
+    filter:blur(8px)
+
+  }
+  100% {
+    opacity:1;
+
+    transform:translateY(0) scale(1);
+    filter:blur(0);
+
+  }
+}
 
 @utility marquee {
   animation: marquee-x 40s linear infinite;
