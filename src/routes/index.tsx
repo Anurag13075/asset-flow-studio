@@ -950,6 +950,145 @@ function LineageTimeMachineSection() {
   );
 }
 
+function VaultCommandCenter() {
+  const [project, setProject] = useState<"launch" | "brand" | "catalog">("launch");
+  const [scanned, setScanned] = useState(false);
+
+  const projects = {
+    launch: {
+      name: "Client_Relaunch_Master",
+      type: "Campaign handoff",
+      score: scanned ? "98" : "61",
+      files: "142",
+      risks: scanned ? "0" : "4",
+      recovered: scanned ? "9 / 9" : "6 / 9",
+      actions: scanned
+        ? ["9 linked files recovered", "Commercial font proof attached", "Clean delivery manifest generated"]
+        : ["3 missing linked media files", "Font license proof is incomplete", "4 duplicate exports can be removed"],
+    },
+    brand: {
+      name: "Northstar_Brand_System",
+      type: "Brand library audit",
+      score: scanned ? "100" : "76",
+      files: "386",
+      risks: scanned ? "0" : "2",
+      recovered: scanned ? "24 / 24" : "22 / 24",
+      actions: scanned
+        ? ["24 source vectors mapped", "Usage rules attached to 100% of marks", "AI context pack ready"]
+        : ["2 logo variants lack source vectors", "3 font seats need verification", "Brand rules are split across folders"],
+    },
+    catalog: {
+      name: "Spring_3D_Catalog",
+      type: "3D production review",
+      score: scanned ? "94" : "68",
+      files: "1,204",
+      risks: scanned ? "1" : "8",
+      recovered: scanned ? "38 / 38" : "31 / 38",
+      actions: scanned
+        ? ["38 texture dependencies packaged", "1 HDRI needs license review", "Web and AR exports grouped"]
+        : ["7 PBR texture links are loose", "1 HDRI has unknown usage rights", "Duplicate geometry is using 14.8 GB"],
+    },
+  };
+
+  const current = projects[project];
+
+  return (
+    <section id="command-center" className="relative z-10 mx-auto max-w-6xl px-6 pb-12">
+      <div className="overflow-hidden rounded-2xl border border-primary/35 bg-surface shadow-[0_28px_80px_-32px_rgba(232,163,61,0.38)]">
+        <div className="grid gap-0 lg:grid-cols-[0.82fr_1.18fr]">
+          <div className="border-b border-border bg-background p-7 md:p-9 lg:border-b-0 lg:border-r">
+            <div className="flex items-center justify-between gap-4">
+              <div className="inline-flex items-center gap-2 rounded-full border border-primary/35 bg-primary/10 px-3 py-1 font-mono text-[10px] uppercase tracking-widest text-foreground">
+                <Zap className="size-3.5 text-primary" />
+                Command center
+              </div>
+              <span className="font-mono text-[10px] text-muted-foreground">01 / 03</span>
+            </div>
+            <h2 className="mt-6 max-w-md text-3xl font-medium leading-tight tracking-tight text-foreground sm:text-4xl">
+              Know what is safe to ship before anyone asks.
+            </h2>
+            <p className="mt-4 max-w-md text-[14px] leading-relaxed text-muted-foreground">
+              One local scan turns a messy project folder into a decision-ready brief: dependencies, rights, duplicates, and the exact next actions for your team.
+            </p>
+            <div className="mt-7 flex flex-wrap gap-2">
+              {(["launch", "brand", "catalog"] as const).map((id) => (
+                <button
+                  key={id}
+                  onClick={() => { setProject(id); setScanned(false); }}
+                  className={`rounded-lg border px-3 py-2 text-xs font-medium transition-colors ${project === id ? "border-primary/50 bg-primary text-primary-foreground" : "border-border bg-surface text-muted-foreground hover:text-foreground"}`}
+                >
+                  {id === "launch" ? "Campaign" : id === "brand" ? "Brand kit" : "3D catalog"}
+                </button>
+              ))}
+            </div>
+            <button
+              onClick={() => setScanned(!scanned)}
+              className="mt-8 inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-3 text-xs font-semibold text-primary-foreground transition-transform hover:-translate-y-0.5"
+            >
+              <ScanSearch className="size-4" />
+              {scanned ? "Review original scan" : "Run local health scan"}
+            </button>
+            <p className="mt-3 font-mono text-[10px] text-muted-foreground">Nothing uploads. Nothing moves without approval.</p>
+          </div>
+
+          <div className="p-4 md:p-6">
+            <div className="rounded-xl border border-border bg-background text-left">
+              <div className="flex flex-wrap items-center gap-3 border-b border-border px-4 py-3">
+                <div className="grid size-8 place-items-center rounded-lg border border-primary/30 bg-primary/10 text-primary"><DatabaseZap className="size-4" /></div>
+                <div>
+                  <p className="text-xs font-medium text-foreground">{current.name}</p>
+                  <p className="font-mono text-[10px] text-muted-foreground">{current.type} / local index</p>
+                </div>
+                <span className={`ml-auto rounded-md border px-2 py-1 font-mono text-[10px] ${scanned ? "border-[#4FBFA0]/30 bg-[#4FBFA0]/10 text-[#4FBFA0]" : "border-primary/30 bg-primary/10 text-primary"}`}>
+                  {scanned ? "ready to deliver" : "attention needed"}
+                </span>
+              </div>
+              <div className="grid grid-cols-3 gap-px border-b border-border bg-border">
+                {[["Health score", `${current.score}%`], ["Indexed files", current.files], ["Open risks", current.risks]].map(([label, value]) => (
+                  <div key={label} className="bg-surface p-4">
+                    <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">{label}</p>
+                    <p className={`mt-2 text-2xl font-semibold ${label === "Open risks" && !scanned ? "text-destructive" : "text-foreground"}`}>{value}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="grid gap-5 p-5 md:grid-cols-[1fr_170px]">
+                <div>
+                  <div className="flex items-center justify-between gap-3">
+                    <p className="text-xs font-medium text-foreground">Recommended next actions</p>
+                    <span className="font-mono text-[10px] text-muted-foreground">priority sorted</span>
+                  </div>
+                  <div className="mt-4 space-y-2">
+                    {current.actions.map((action, index) => (
+                      <div key={action} className="flex items-center gap-3 rounded-lg border border-border bg-surface px-3 py-2.5">
+                        <span className={`grid size-5 shrink-0 place-items-center rounded-full ${scanned ? "bg-[#4FBFA0]/15 text-[#4FBFA0]" : "bg-primary/15 text-primary"}`}>
+                          {scanned ? <Check className="size-3" /> : <span className="font-mono text-[10px]">{index + 1}</span>}
+                        </span>
+                        <span className="text-[11px] text-foreground">{action}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <aside className="rounded-xl border border-border bg-surface p-4">
+                  <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">Delivery confidence</p>
+                  <div className="mt-5 grid place-items-center">
+                    <div className="grid size-28 place-items-center rounded-full border-[7px] border-primary/20" style={{ borderTopColor: scanned ? "#4FBFA0" : "#E8A33D", borderRightColor: scanned ? "#4FBFA0" : "#E8A33D" }}>
+                      <span className="text-2xl font-semibold text-foreground">{current.score}%</span>
+                    </div>
+                  </div>
+                  <div className="mt-5 space-y-2 font-mono text-[10px] text-muted-foreground">
+                    <div className="flex justify-between"><span>Links recovered</span><span className="text-foreground">{current.recovered}</span></div>
+                    <div className="flex justify-between"><span>Privacy mode</span><span className="text-[#4FBFA0]">local only</span></div>
+                  </div>
+                </aside>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function Landing() {
   return (
     <main className="relative min-h-screen bg-background text-foreground overflow-hidden">
@@ -969,6 +1108,9 @@ function Landing() {
         <nav className="hidden items-center gap-7 text-[13px] text-muted-foreground md:flex">
           <a href="#highlights" className="transition-colors hover:text-foreground">
             Best features
+          </a>
+          <a href="#command-center" className="transition-colors hover:text-foreground">
+            Command center
           </a>
           <a href="#rescue" className="transition-colors hover:text-foreground">
             Flagship
@@ -1114,6 +1256,8 @@ function Landing() {
           <SearchDemoPanel />
         </div>
       </section>
+
+      <VaultCommandCenter />
 
       {/* Best Feature Highlights */}
       <BestFeatureHighlights />
