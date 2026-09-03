@@ -1936,7 +1936,7 @@ function AppInterfaceShowcase() {
         </div>
 
         {/* Real App Screenshot Preview Container with Hotspot Overlays */}
-        <div className="relative aspect-[16/9] w-full overflow-hidden bg-[#16140F]">
+        <div className="relative aspect-[20/9] w-full overflow-hidden bg-[#16140F]">
           <img
             src="/library-app-screenshot.png"
             alt="Vaultgrid Library Workspace Screenshot"
