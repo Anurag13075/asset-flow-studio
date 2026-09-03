@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate, redirect } from "@tanstack/react-router";
 import {
   BarChart3,
   Boxes,
@@ -30,6 +30,22 @@ import { KINDS, type Asset } from "@/lib/data";
 import { isFreeAccessEmail, useHotkey, useStore } from "@/lib/store";
 
 export const Route = createFileRoute("/library")({
+  // Prevent unauthenticated users from loading this route by checking
+  // the persisted localStorage state before the route loads. This runs
+  // early (during navigation) and redirects to /auth when no user is present.
+  beforeLoad: async () => {
+    if (typeof window === "undefined") return;
+    try {
+      const raw = localStorage.getItem("screenfast.v2");
+      if (!raw) throw redirect({ to: "/auth" });
+      const stored = JSON.parse(raw);
+      const userEmail = stored?.user?.email ?? null;
+      if (!userEmail) throw redirect({ to: "/auth" });
+    } catch (e) {
+      // If anything goes wrong reading local state, drop the user to /auth
+      throw redirect({ to: "/auth" });
+    }
+  },
   head: () => ({
     meta: [
       { title: "Library — screenfast" },
@@ -54,10 +70,12 @@ function LibraryPage() {
   } = useStore();
   const { setTheme } = useTheme();
   const navigate = useNavigate();
-  const [active, setActive] = useState<{ view: SmartView; collection: string | null }>({
-    view: "all",
-    collection: null,
-  });
+  const [active, setActive] = useState<{ view: SmartView; collection: string | null }>(
+    {
+      view: "all",
+      collection: null,
+    },
+  );
   const [query, setQuery] = useState("");
   const [kind, setKind] = useState("all");
   const [color, setColor] = useState("all");
