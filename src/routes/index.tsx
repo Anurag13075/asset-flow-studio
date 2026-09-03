@@ -6,7 +6,7 @@ import {
   Boxes,
   Check,
   ChevronDown,
-  Copy,
+  Copy, 
   FileVideo,
   Fingerprint,
   Layers,
@@ -20,7 +20,8 @@ import {
   Wand2,
 } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import heroImg from "@/assets/lp-hero.jpg";
+import heroImg from "@/assets/newhero.png";
+
 import searchImg from "@/assets/lp-search.jpg";
 import dedupeImg from "@/assets/lp-dedupe.jpg";
 import handoffImg from "@/assets/lp-handoff.jpg";
