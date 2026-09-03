@@ -1065,6 +1065,21 @@ function Landing() {
           />
         </a>
 
+        <a
+          href="https://turbo0.com/item/vaultgrid"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="rise mt-3 inline-flex rounded-lg border border-border bg-surface/70 p-2 shadow-[0_10px_24px_-18px_rgba(0,0,0,0.55)] transition-colors hover:border-primary/40"
+          style={{ animationDelay: "220ms" }}
+        >
+          <img
+            src="https://img.turbo0.com/badge-listed-light.svg"
+            alt="Listed on Turbo0"
+            height={54}
+            className="h-[54px] w-auto"
+          />
+        </a>
+
         {/* Quick Feature Stats Bar */}
         <div
           className="rise mt-10 grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-3xl mx-auto pt-6 border-t border-border/60 text-left font-mono text-[11px]"
